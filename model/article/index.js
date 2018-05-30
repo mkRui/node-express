@@ -40,6 +40,14 @@ const article = sequelize.define('article_control', {
   articleClassification: {
     type: Sequelize.INTEGER,
     field: 'article_classification'
+  },
+  state: {
+    type: Sequelize.STRING,
+    field: 'article_state'
+  },
+  draft: {
+    type: Sequelize.STRING,
+    field: 'article_draft'
   }
 }, {
   timestamps: false,
@@ -47,13 +55,12 @@ const article = sequelize.define('article_control', {
 });
 
 // 添加文章
-exports.addArticle = function (articleTitle, articleMin, articleContent, praise, createTime, readArticleNumber, articleComments, articleNum, articleTag, articleClassification) {
-  console.log(articleTitle)
+exports.addArticle = function (articleTitle, articleMin, articleContent, praise, createTime, readArticleNumber, articleComments, articleNum, articleTag, articleClassification, state, draft) {
   return article.create({
     articleTitle: articleTitle,
     articleMin: articleMin,
-    articleContent: articleContent
-    // praise: praise,
+    articleContent: articleContent,
+    praise: praise,
     // createTime: createTime,
     // read_article_number: readArticleNumber,
     // article_comments: articleComments,
