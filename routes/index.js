@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const article = require('./../model/article/index')
 const controller = require('./../controller/index')
 
 /* GET home page. */
@@ -9,6 +8,8 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/initPage', controller.user.initPage);
+
+router.post('/article/addArticle', controller.article.addArticle)
 
 
 
