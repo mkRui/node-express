@@ -9,6 +9,10 @@ router.get('/', function(req, res, next) {
 
 router.get('/initPage', controller.user.initPage);
 
+router.post('/addUser', controller.user.addUser)
+
+router.post('/login', controller.user.login)
+
 router.post('/article/addArticle', controller.article.addArticle)
 
 

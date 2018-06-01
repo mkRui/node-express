@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const sequelize = require('./../../config/index');
+const sequelize = require('./../../config/index').SEQUELIZE;
 
 const article = sequelize.define('article_control', {
   articleTitle: {

@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const sequelize = require('./../../config/index');
+const sequelize = require('./../../config/index').SEQUELIZE;
 
 const userControl = sequelize.define('user_control', {
   userName: {
@@ -67,4 +67,31 @@ exports.initPage = (userName, passWord) => {
       passWord: passWord
     }
   })
+}
+
+
+exports.addUser = (userName, passWord, nickName, email) => {
+  return userControl.create({
+    userName: userName,
+    passWord: passWord,
+    nickName: nickName,
+    email: email
+  })
+}
+
+exports.selectUser = (nickName, passWord) => {
+  if (passWord) {
+    return userControl.findAll({
+      where: {
+        nickName: nickName,
+        passWord: passWord
+      }
+    })
+  } else {
+    return userControl.findAll({
+      where: {
+        nickName: nickName
+      }
+    })
+  }
 }
