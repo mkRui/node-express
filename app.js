@@ -15,7 +15,7 @@ app.use(logger('dev'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(cookieParser('qzuser'));
 app.use(session({
   secret: 'qzuser',
   cookie: {maxAge: 1000 * 60 * 30},
@@ -23,6 +23,11 @@ app.use(session({
   saveUninitialized: true
 }))
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use((req, res, next) => {
+  console.log(req.url)
+  next()
+})
 
 app.use('/blogApp', indexRouter);
 
