@@ -33,6 +33,10 @@ const userControl = sequelize.define('user_control', {
   createTime: {
     type: Sequelize.STRING,
     field: 'createtime'
+  },
+  userState: {
+    type: Sequelize.INTEGER,
+    field: 'user_state'
   }
 }, {
   underscored: true,
@@ -56,14 +60,15 @@ const roleControl = sequelize.define('user_role', {
 
 userControl.belongsTo(roleControl)
 
-exports.initPage = (userName, passWord) => {
+
+exports.selectUser = (nickName, passWord) => {
   return userControl.findAll({
     include: [{
       model: roleControl,
       required: true
     }],
     where: {
-      userName: userName,
+      nickName: nickName,
       passWord: passWord
     }
   })
@@ -79,19 +84,36 @@ exports.addUser = (userName, passWord, nickName, email) => {
   })
 }
 
-exports.selectUser = (nickName, passWord) => {
-  if (passWord) {
-    return userControl.findAll({
-      where: {
-        nickName: nickName,
-        passWord: passWord
-      }
-    })
-  } else {
-    return userControl.findAll({
-      where: {
-        nickName: nickName
-      }
-    })
-  }
+exports.selectNickName = (nickName) => {
+  return userControl.findAll({
+    where: {
+      nickName: nickName
+    }
+  })
+}
+
+exports.updateUserState = (id, state) => {
+  return userControl.update({
+    userState: state,
+  }, {
+    where: {
+      id: id
+    }
+  })
+}
+
+exports.selectAllUser = () => {
+  return userControl.findAll()
+}
+
+exports.updateUserInfo = (id, nickName, email, UserRoleId) => {
+  return userControl.update({
+    nickName: nickName,
+    email: email,
+    UserRoleId: UserRoleId
+  }, {
+    where: {
+      id: id
+    }
+  })
 }
