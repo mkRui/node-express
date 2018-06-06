@@ -5,6 +5,8 @@
 
 const articleControl = require('./../../model/article/index.model')
 
+const tag = require('./../../model/tag/index.model')
+
 const dataModel = require('./../../config/index').DATA
 
 const fs = require('fs')
@@ -127,9 +129,27 @@ class article {
 
   static articleDetail (req, res, next) {
     let {id} = req.body
+    let articleInfo
     articleControl.selectArticle(id).then((data) => {
-      res.send(dataModel(1, '', data[0]))
+      let {articleTitle, articleMin, articleContent, praise, readArticleNumber, createTime} = data[0]
+      articleInfo = {
+        articleTitle: articleTitle,
+        articleMin: articleMin,
+        articleContent: articleContent,
+        praise: Number(praise),
+        readArticleNumber: Number(readArticleNumber),
+        createTime: Number(createTime)
+      }
+      return Promise.all([
+        tag.selectTagList(data[0].articleTag),
+        tag.selectTagList(data[0].articleClassification)
+      ])
+    }).then((data) => {
+      articleInfo.tagList = data[0]
+      articleInfo.classifyList = data[1][0]
+      res.send(dataModel(1, '', articleInfo))
     }).catch((data) => {
+      console.log(data)
       res.send(dataModel(-1, '服务器忙', {}))
     })
   }

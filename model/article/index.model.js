@@ -115,3 +115,15 @@ exports.deleteArticle = function (id) {
     }
   })
 }
+
+exports.selectAllArticle = function () {
+  return article.findAll()
+}
+
+exports.articleRead = function () {
+  return sequelize.query('SELECT read_article_number as readArticleNumber, article_title as articleTitle  FROM article_control ORDER BY read_article_number DESC LIMIT 5')
+}
+
+exports.articleSubmit = function () {
+  return sequelize.query('SELECT article_create_user as articleCreateUser,COUNT(*) as Count FROM article_control GROUP BY article_create_user LIMIT 5')
+}
