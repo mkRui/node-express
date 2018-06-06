@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const controller = require('./../controller/index')
+const multer = require('multer')
+const uploadImg = multer({dest: './../img'})
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -29,9 +31,26 @@ router.post('/leaveWell/viewDetail', controller.leaveWell.viewDetail)
 
 router.get('/leaveWell/allLeaveList', controller.leaveWell.allLeaveList)
 
+// 标签管理
+router.post('/tagControl/addPageState', controller.tag.addPageState)
+
+router.get('/tagControl/allTagPage', controller.tag.allTagPage)
+
+router.post('/tagControl/updateTagInfo', controller.tag.updateTagInfo)
+
+router.post('/tagControl/deleteTag', controller.tag.deleteTag)
+
 // 文章
 router.post('/article/addArticle', controller.article.addArticle)
 
+router.post('/article/uploadImg', uploadImg.single('fileName'), controller.article.articleImg)
 
+router.get('/article/articlePage', controller.article.articlePage)
+
+router.post('/article/articleDetail', controller.article.articleDetail)
+
+router.post('/article/deleteArticle', controller.article.deleteArticle)
+
+// 面板
 
 module.exports = router;
