@@ -26,7 +26,7 @@ class leaveController {
     leaveModel.allLeave().then((data) => {
       return leaveModel.leaveWellPage(Number(pageSize), (pageNo - 1) * pageSize)      
     }).then((data) => {
-      res.send(dataModel(-1, '', {
+      res.send(dataModel(1, '', {
         totalCount: data.count,
         pageSize: pageSize,
         pageNo: pageNo,
@@ -92,7 +92,7 @@ class leaveController {
   static viewDetail (req, res, next) {
     let { id } = req.body
     leaveModel.viewDetail(id).then((data) => {
-      res.send(dataModel(1, null, data[0]))
+      res.send(dataModel(1, '', data[0]))
     }).catch((data) => {
       res.send(dataModel(-1, '服务器忙', {}))
     })
