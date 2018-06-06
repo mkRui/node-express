@@ -22,7 +22,7 @@ class user {
    */
   static initPage (req, res, next) {
     if (req.session.init) {
-      res.send(dataModel(-1, null , req.session.init))
+      res.send(dataModel(-1, '' , req.session.init))
     } else {
       res.send(dataModel(-1, '您还没有登录 请先登录', {}))
     }
@@ -82,7 +82,7 @@ class user {
       passWord = md5(req.body.passWord)
     }
     userModel.selectUser(nickName, passWord).then((data) => {
-      if (data) {
+      if (data[0]) {
         let { id, nickName, createTime, userFace, user_role, userState } = data[0]
         req.session.init = {
           id: id,
@@ -93,8 +93,11 @@ class user {
           userRole: user_role
         }
         res.send(dataModel(1, '登录成功', {}))
+      } else {
+        res.send(dataModel(1, '该用户不存在', {}))
       }
     }).catch((data) => {
+      console.log(data)
       res.send(dataModel(-1, '服务器忙', {}))
     })
   }
