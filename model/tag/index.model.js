@@ -72,3 +72,14 @@ exports.selectTag = (tagTitle) => {
   })
 }
 
+exports.selectTagList = (id) => {
+  let idArr = id.split(',')
+  return tag.findAll({
+    where: {
+      id: {
+        $in: idArr
+      }
+    }
+  })
+}
+
