@@ -52,9 +52,11 @@ exports.deleteLeave = (id) => {
   })
 }
 
-exports.leaveWellPage = (PageSize, PageNo) => {
+// offset 代表初始值
+// limit 分页数量
+exports.leaveWellPage = (pageSize, pageNo) => {
   return leaveWell.findAndCountAll({
-    offset: PageNo,
-    limit: PageSize
+    offset: pageNo,
+    limit: pageSize
   })
 }

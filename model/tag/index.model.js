@@ -7,7 +7,7 @@ const tag = sequelize.define('tag_control', {
     field: 'tag_title'
   },
   tagType: {
-    type: Sequelize.STRING,
+    type: Sequelize.INTEGER,
     field: 'tag_type'
   },
   tagCreateUser: {
@@ -19,7 +19,7 @@ const tag = sequelize.define('tag_control', {
     field: 'tag_instructions'
   },
   createTime: {
-    type: Sequelize.STRING,
+    type: Sequelize.INTEGER,
     field: 'create_time'
   }
 }, {
@@ -55,10 +55,20 @@ exports.deleteTag = (id) => {
   })
 }
 
-exports.tagPage = (PageSize, PageNo) => {
+// offset 代表初始值
+// limit 分页数量
+exports.tagPage = (pageSize, pageNo) => {
   return tag.findAndCountAll({
-    offset: PageNum,
-    limit: currentPage
+    offset: pageNo,
+    limit: pageSize
+  })
+}
+
+exports.selectTag = (tagTitle) => {
+  return tag.findAll({
+    where: {
+      tagTitle, tagTitle
+    }
   })
 }
 

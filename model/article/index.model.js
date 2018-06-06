@@ -19,19 +19,19 @@ const article = sequelize.define('article_control', {
   },
   createTime: {
     type: Sequelize.INTEGER,
-    field: 'create-time'
+    field: 'create_time'
   },
   readArticleNumber: {
     type: Sequelize.INTEGER,
     field: 'read_article_number'
   },
+  articleCreateUser: {
+    type: Sequelize.STRING,
+    field: 'article_create_user'
+  },
   articleComments: {
     type: Sequelize.INTEGER,
     field: 'article_comments'
-  },
-  articleNum: {
-    type: Sequelize.INTEGER,
-    field: 'article_num'
   },
   articleTag: {
     type: Sequelize.STRING,
@@ -54,18 +54,64 @@ const article = sequelize.define('article_control', {
   freezeTableName: true
 });
 
-// 添加文章
-exports.addArticle = function (articleTitle, articleMin, articleContent, praise, createTime, readArticleNumber, articleComments, articleNum, articleTag, articleClassification, state, draft) {
+exports.addArticle = function (articleTitle, articleMin, articleContent, createTime, articleTag, articleClassification, state, draft, articleCreateUser) {
   return article.create({
     articleTitle: articleTitle,
     articleMin: articleMin,
     articleContent: articleContent,
-    praise: praise,
-    // createTime: createTime,
-    // read_article_number: readArticleNumber,
-    // article_comments: articleComments,
-    // article_num: articleNum,
-    // article_tag: articleTag,
-    // article_classification: articleClassification
+    createTime: createTime,
+    articleTag: articleTag,
+    articleClassification: articleClassification,
+    state: state,
+    draft: draft,
+    articleCreateUser: articleCreateUser
+  })
+}
+
+exports.selectArticle = function (articleTitle) {
+  return article.findAll({
+    where: {
+      articleTitle: articleTitle
+    }
+  })
+}
+
+exports.selectArticlePage = function (state, submit, tag, classify, keyWord, pageNo, pageSize) {
+  return article.findAndCountAll({
+    where: {
+      state: {
+        $like: `%${state}%`
+      },
+      draft: {
+        $like: `%${submit}%`
+      },
+      articleTag: {
+        $like: `%${tag}%`
+      },
+      articleClassification: {
+        $like: `%${classify}%`
+      },
+      articleTitle: {
+        $like: `%${keyWord}%`
+      }
+    },
+    offset: pageNo,
+    limit: pageSize
+  })
+}
+
+exports.selectArticle = function (id) {
+  return article.findAll({
+    where: {
+      id: id
+    }
+  })
+}
+
+exports.deleteArticle = function (id) {
+  return article.destroy({
+    where: {
+      id: id
+    }
   })
 }
