@@ -12,6 +12,10 @@ const dataModel = require('./../../config/index').DATA
 
 const md5 = require('md5-node')
 
+const fs = require('fs')
+
+const path = require('path')
+
 class user {
 
   /**
@@ -103,6 +107,45 @@ class user {
   }
 
   /**
+   * 退出登录
+   * @class logOut
+   * 
+   * @static logOut
+   */
+
+  static logOut (req, res, next) {
+    console.log(req.session.init)
+    delete req.session.init
+    res.send(dataModel(1, '退出成功', {}))
+  }
+
+  /**
+   * 修改头像
+   * @class updateUserface
+   * 
+   * @static updateUserface
+   */
+
+  static updateUserface (req, res, next) {
+    const files = req.file.path + path.parse(req.file.originalname).ext
+    const filePath = `http://www.scrscript.com/static/${req.file.filename + path.parse(req.file.originalname).ext}`
+    fs.rename(req.file.path,files,(err, data) => {
+      if (err) {
+        res.send(dataModel(-1, '服务器忙', {}))
+      }
+    })
+    if (req.session.init) {
+      userModel.updateUserface(req.session.init.id, filePath).then((data) => {
+        res.send(dataModel(1, '修改成功', filePath))
+        req.session.init.userFace = filePath
+        res.send(dataModel(1, '修改失败', {}))
+      })
+    } else {
+      res.send(dataModel(-2, '请重新登录', {}))
+    }
+  }
+
+  /**
    * 修改人员状态
    * @class updateState
    * 
@@ -111,40 +154,72 @@ class user {
    * @param {id} 人员id
    */
   
-   static updateState (req, res, next) {
+  static updateState (req, res, next) {
     let { id, state } = req.body
     userModel.updateUserState(id, state).then((data) => {
-      return userModel.selectAllUser()
-    }).then((data) => {
-      res.send(data)
+      res.send(dataModel(1, '修改成功', {}))
+    }).catch((data) => {
+      res.send(dataModel(-1, '服务器忙', {}))
     })
-   }
+  }
 
-   /**
-    * 修改人员信息
-    * 
-    * @class updateInfo
-    * 
-    * @static updateInfo
-    * 
-    * @param {id} 人员id
-    * 
-    * @param {nickName} 人员昵称
-    * 
-    * @param {email} 人员邮箱
-    * 
-    * @param {UserRoleId} 人员角色
-    * 
-    */
+  /**
+   * 修改人员信息
+   * 
+   * @class updateInfo
+   * 
+   * @static updateInfo
+   * 
+   * @param {id} 人员id
+   * 
+   * @param {nickName} 人员昵称
+   * 
+   * @param {email} 人员邮箱
+   * 
+   * @param {UserRoleId} 人员角色
+   * 
+   */
 
-    static updateInfo (req, res, next) {
-      let {id, nickName, email, UserRoleId} = req.body
-      userModel.updateUserInfo(id, nickName, email, UserRoleId).then((data) => {
-        return userModel.selectAllUser()
-      }).then((data) => {
-        res.send(data)
-      })
-    }
+  static updateInfo (req, res, next) {
+    let {id, nickName, email, UserRoleId} = req.body
+    userModel.updateUserInfo(id, nickName, email, UserRoleId).then((data) => {
+      res.send(dataModel(1, '修改成功', {}))
+    }).catch((data) => {
+      res.send(dataModel(-1, '服务器忙', {}))
+    })
+  }
+
+  /**
+   * @class allUserList
+   * 
+   * @static allUserList
+   */
+
+  static allUserList (req, res, next) {
+    userModel.selectAllUser().then((data) => {
+      res.send(dataModel(1, '', data))
+    }).catch((data) => {
+      res.send(dataModel(-1, '服务器忙', {}))
+    })
+  }
+
+  /**
+   * @class allUserSelect
+   * 
+   * @static allUserSelect
+   * 
+   * @param {pageNo} 文章页数
+   * 
+   * @param {pageSize} 文章每夜数据
+   */
+
+  static allUserSelect (req, res, next) {
+    userModel.userListPage().then((data) => {
+      res.send(dataModel(1, '', data))
+    }).catch((data) => {
+      res.send(dataModel(-1, '服务器忙', {}))
+    })
+  }
 }
 
 module.exports = user

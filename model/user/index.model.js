@@ -80,7 +80,8 @@ exports.addUser = (userName, passWord, nickName, email) => {
     userName: userName,
     passWord: passWord,
     nickName: nickName,
-    email: email
+    email: email,
+    createTime: new Date().getTime()
   })
 }
 
@@ -102,8 +103,29 @@ exports.updateUserState = (id, state) => {
   })
 }
 
+exports.updateUserface = (id, userFace) => {
+  return userControl.update({
+    userFace: userFace,
+  }, {
+    where: {
+      id: id
+    }
+  })
+}
+
 exports.selectAllUser = () => {
-  return userControl.findAll()
+  return userControl.findAndCountAll({
+    limit: 20
+  })
+}
+
+// offset 代表初始值
+// limit 分页数量
+exports.userListPage = (pageSize, pageNo) => {
+  return userControl.findAndCountAll({
+    offset: pageNo,
+    limit: pageSize
+  })
 }
 
 exports.updateUserInfo = (id, nickName, email, UserRoleId) => {

@@ -17,10 +17,16 @@ router.post('/addUser', controller.user.addUser)
 
 router.post('/login', controller.user.login)
 
-// 修改人员的状态
+// 人员管理
 router.post('/user/updateState', controller.user.updateState)
 
 router.post('/user/updateInfo', controller.user.updateInfo)
+
+router.get('/user/allUserList', controller.user.allUserList)
+
+router.post('/user/logOut', controller.user.logOut)
+
+router.post('/user/updateUserface', uploadImg.single('fileName'), controller.user.updateUserface)
 
 // 留言墙
 router.post('/leaveWell/addLeave', controller.leaveWell.addLeave)
@@ -52,5 +58,10 @@ router.post('/article/articleDetail', controller.article.articleDetail)
 router.post('/article/deleteArticle', controller.article.deleteArticle)
 
 // 面板
+router.get('/panel/statistical', controller.panel.statistical)
+
+router.get('/panel/submitArticle', controller.panel.submitArticle)
+
+router.get('/panel/articleRead', controller.panel.articleRead)
 
 module.exports = router;
