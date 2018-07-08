@@ -94,7 +94,7 @@ class user {
           createTime: createTime,
           userFace: userFace,
           userState: userState,
-          userRole: user_role
+          userRole: user_role,
         }
         res.send(dataModel(1, '登录成功', {}))
       } else {

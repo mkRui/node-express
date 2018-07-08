@@ -18,6 +18,10 @@ const global = sequelize.define('global', {
     type: Sequelize.STRING,
     field: 'music'
   },
+  hobby: {
+    type: Sequelize.STRING,
+    field: 'hobby'
+  },
   feelingsTitle: {
     type: Sequelize.STRING,
     field: 'feelings_title'
@@ -29,6 +33,10 @@ const global = sequelize.define('global', {
   feelingsMinTitle: {
     type: Sequelize.STRING,
     field: 'feelings_min_title'
+  },
+  feelingsContent: {
+    type: Sequelize.STRING,
+    field: 'feelings_content'
   },
   codeCooperation: {
     type: Sequelize.STRING,
@@ -50,3 +58,25 @@ const global = sequelize.define('global', {
   timestamps: false,
   freezeTableName: true
 })
+
+exports.updateGlobal = function (title, cooperation, movie, music, hobby, feelingsTitle, feelingsMinTitle, feelingsContent, introduce, codeCooperation, authorTitle, authorFace, authorImg) {
+  return global.update({
+    title: title,
+    cooperation: cooperation,
+    movie: movie,
+    music: music,
+    hobby: hobby,
+    feelingsTitle: feelingsTitle,
+    feelingsMinTitle: feelingsMinTitle,
+    feelingsContent: feelingsContent,
+    introduce: introduce,
+    codeCooperation: codeCooperation,
+    authorTitle: authorTitle,
+    authorFace: authorFace,
+    authorImg: authorImg
+  }, {
+    where: {
+      id: 1
+    }
+  })
+}

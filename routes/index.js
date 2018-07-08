@@ -64,4 +64,16 @@ router.get('/panel/submitArticle', controller.panel.submitArticle)
 
 router.get('/panel/articleRead', controller.panel.articleRead)
 
+// 全局设置
+router.post('/global', controller.global.globalUpdate)
+
+// 评论控制
+router.post('/comments/addComment', controller.comments.addComment)
+
+router.post('/comments/deleteComment', controller.comments.deleteComment)
+
+router.post('/comments/commentDetails', controller.comments.commentDetails)
+
+router.post('/comments/commentPraise', controller.comments.commentPraise)
+
 module.exports = router;
