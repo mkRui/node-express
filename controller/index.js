@@ -9,3 +9,7 @@ exports.leaveWell = require('./leaveWell/leaveWell.controller')
 exports.tag = require('./tag/tag.controller')
 
 exports.panel = require('./panel/panel.controller')
+
+exports.global = require('./global/global.controller')
+
+exports.comments = require('./comments/comments.controller')
