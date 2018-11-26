@@ -111,13 +111,13 @@ class article {
       classify = '',
       keyWord = '',
       pageNo = 1,
-      pageSize = 10
+      pageSize = 5
     } = req.query
     console.log(req.query)
     articleControl.selectArticlePage(state, submit, tag, classify, keyWord, Number(pageNo - 1) * pageSize, Number(pageSize)).then((data) => {
       res.send(dataModel(1, '', {
-        pageNo: pageNo,
-        pageSize: pageSize,
+        pageNo: Number(pageNo),
+        pageSize: Number(pageSize),
         totalCount: data.count,
         list: data.rows
       }))

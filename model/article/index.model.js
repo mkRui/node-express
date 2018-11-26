@@ -18,7 +18,7 @@ const article = sequelize.define('article_control', {
     type: Sequelize.INTEGER
   },
   createTime: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.DATE,
     field: 'create_time'
   },
   readArticleNumber: {
@@ -38,16 +38,20 @@ const article = sequelize.define('article_control', {
     field: 'article_tag'
   },
   articleClassification: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.STRING,
     field: 'article_classification'
   },
   state: {
-    type: Sequelize.STRING,
+    type: Sequelize.INTEGER,
     field: 'article_state'
   },
   draft: {
-    type: Sequelize.STRING,
+    type: Sequelize.INTEGER,
     field: 'article_draft'
+  },
+  cover: {
+    type: Sequelize.STRING,
+    field: 'article_cover'
   }
 }, {
   timestamps: false,

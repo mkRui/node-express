@@ -53,7 +53,7 @@ router.post('/article/uploadImg', uploadImg.single('fileName'), controller.artic
 
 router.get('/article/articlePage', controller.article.articlePage)
 
-router.post('/article/articleDetail', controller.article.articleDetail)
+router.get('/article/articleDetail', controller.article.articleDetail)
 
 router.post('/article/deleteArticle', controller.article.deleteArticle)
 
