@@ -57,8 +57,13 @@ exports.deleteTag = (id) => {
 
 // offset 代表初始值
 // limit 分页数量
-exports.tagPage = (pageSize, pageNo) => {
+exports.tagPage = (pageSize, pageNo, tagState) => {
   return tag.findAndCountAll({
+    where: {
+      tagType: {
+        $like: `%${tagState}%`
+      }
+    },
     offset: pageNo,
     limit: pageSize
   })

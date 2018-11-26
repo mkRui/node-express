@@ -26,9 +26,9 @@ class user {
    */
   static initPage (req, res, next) {
     if (req.session.init) {
-      res.send(dataModel(-1, '' , req.session.init))
+      res.send(dataModel(1, '' , req.session.init))
     } else {
-      res.send(dataModel(-1, '您还没有登录 请先登录', {}))
+      res.send(dataModel(-2, '您还没有登录 请先登录', {}))
     }
   }
 
@@ -94,11 +94,18 @@ class user {
           createTime: createTime,
           userFace: userFace,
           userState: userState,
-          userRole: user_role,
+          userRole: user_role
         }
-        res.send(dataModel(1, '登录成功', {}))
+        res.send(dataModel(1, '登录成功', {
+          id: id,
+          nickName: nickName,
+          createTime: createTime,
+          userFace: userFace,
+          userState: userState,
+          userRole: user_role
+        }))
       } else {
-        res.send(dataModel(1, '该用户不存在', {}))
+        res.send(dataModel(0, '该用户不存在', {}))
       }
     }).catch((data) => {
       console.log(data)

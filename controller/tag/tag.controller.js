@@ -17,11 +17,13 @@ class tag {
    * @param {pageNo} 当前第几页
    * 
    * @param {pageSize} 每夜几条数据
+   * 
+   * @param {tagState} ‘’ 全部 1 标签 0 分类
    */
 
   static allTagPage (req, res, next) {
-    let {pageNo, pageSize} = req.query
-    tagModel.tagPage(Number(pageSize), (pageNo - 1) * pageSize).then((data) => {
+    let {pageNo, pageSize, tagState} = req.query
+    tagModel.tagPage(Number(pageSize), (pageNo - 1) * pageSize, tagState).then((data) => {
       res.send(dataModel(1, '', {
         pageNo: pageNo,
         pageSize: pageSize,

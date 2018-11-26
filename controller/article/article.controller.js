@@ -104,7 +104,15 @@ class article {
    */
 
   static articlePage (req, res, next) {
-    let {state, submit, tag, classify, keyWord, pageNo, pageSize} = req.query
+    let {
+      state = '',
+      submit = '',
+      tag = '',
+      classify = '',
+      keyWord = '',
+      pageNo = 1,
+      pageSize = 10
+    } = req.query
     console.log(req.query)
     articleControl.selectArticlePage(state, submit, tag, classify, keyWord, Number(pageNo - 1) * pageSize, Number(pageSize)).then((data) => {
       res.send(dataModel(1, '', {
