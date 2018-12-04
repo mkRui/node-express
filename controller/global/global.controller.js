@@ -8,6 +8,8 @@ const globalModel = require('./../../model/global/index.model')
 
 const dataModel = require('./../../config/index').DATA
 
+const fs = require('fs')
+
 class global {
   /**
    * @class globalUpdate
@@ -47,6 +49,18 @@ class global {
       res.send(dataModel(1, '保存成功', {}))
     }).catch((data) => {
       res.send(dataModel(-1, '服务器忙', {}))
+    })
+  }
+
+  static renderFile (req, res, next) {
+    console.log(req.params)
+    fs.readFile(`../static/${req.params.img}`, (err, data) => {
+      if (err) {
+        res.send(dataModel(-1, '您查找的文件不存在', {}))
+      } else {
+        res.header("Content-Type", 'image*')
+        res.send(data)
+      }
     })
   }
 }

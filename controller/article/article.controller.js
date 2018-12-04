@@ -38,7 +38,15 @@ class article {
    */
 
   static addArticle (req, res, next) {
-    let {title, minTitle, classify, tag, state, submit, content} = req.body
+    let {
+      title,
+      minTitle,
+      classify,
+      tag,
+      state = 1,
+      submit = 1,
+      content
+    } = req.body
     if (req.session.init) {
       articleControl.selectArticle(title).then((data) => {
         if (data.length) {
@@ -73,12 +81,14 @@ class article {
 
   static articleImg (req, res, next) {
     const files = req.file.path + path.parse(req.file.originalname).ext
-    const filePath = `![](http://www.scrscript.com/static/${req.file.filename + path.parse(req.file.originalname).ext})`
-    fs.rename(req.file.path,files,(err, data) => {
+    fs.rename(req.file.path, files, (err, data) => {
       if (err) {
         res.send(dataModel(-1, '服务器忙', {}))
       } else {
-        res.send(dataModel(1, '上传成功', filePath))
+        res.send(dataModel(1, '上传成功', {
+          fileName: req.file.filename + path.parse(req.file.originalname).ext,
+          filePath: `http://localhost:3000/blogApp/static/${req.file.filename + path.parse(req.file.originalname).ext}`
+        }))
       }
     })
   }

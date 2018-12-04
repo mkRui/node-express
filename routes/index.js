@@ -2,12 +2,17 @@ const express = require('express');
 const router = express.Router();
 const controller = require('./../controller/index')
 const multer = require('multer')
-const uploadImg = multer({dest: './../img'})
+const uploadImg = multer({dest: './../static'})
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.send('this is Blog welcome in')
 });
+
+/**
+ * 图片路径映射
+ */
+router.get('/static/:img', controller.global.renderFile);
 
 // 初始化
 router.get('/initPage', controller.user.initPage);
