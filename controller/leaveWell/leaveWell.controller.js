@@ -90,7 +90,7 @@ class leaveController {
   */
 
   static viewDetail (req, res, next) {
-    let { id } = req.body
+    let { id } = req.query
     leaveModel.viewDetail(id).then((data) => {
       res.send(dataModel(1, '', data[0]))
     }).catch((data) => {

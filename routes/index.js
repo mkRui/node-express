@@ -38,7 +38,7 @@ router.post('/leaveWell/addLeave', controller.leaveWell.addLeave)
 
 router.post('/leaveWell/deleteLeave', controller.leaveWell.deleteLeave)
 
-router.post('/leaveWell/viewDetail', controller.leaveWell.viewDetail)
+router.get('/leaveWell/viewDetail', controller.leaveWell.viewDetail)
 
 router.get('/leaveWell/allLeaveList', controller.leaveWell.allLeaveList)
 
