@@ -5,10 +5,9 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const bodyParser = require('body-parser')
 const session = require('express-session')
-
-
-
 const indexRouter = require('./routes/index');
+const dataModel = require('./config/index').DATA
+
 
 const app = express();
 app.use(logger('dev'));
@@ -25,7 +24,6 @@ app.use(session({
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use((req, res, next) => {
-  console.log(req.url)
   next()
 })
 

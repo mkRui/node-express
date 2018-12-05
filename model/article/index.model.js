@@ -58,18 +58,50 @@ const article = sequelize.define('article_control', {
   freezeTableName: true
 });
 
-exports.addArticle = function (articleTitle, articleMin, articleContent, createTime, articleTag, articleClassification, state, draft, articleCreateUser) {
-  return article.create({
-    articleTitle: articleTitle,
-    articleMin: articleMin,
-    articleContent: articleContent,
-    createTime: createTime,
-    articleTag: articleTag,
-    articleClassification: articleClassification,
-    state: state,
-    draft: draft,
-    articleCreateUser: articleCreateUser
-  })
+exports.addArticle = function (
+    articleTitle,
+    articleMin,
+    articleContent,
+    createTime,
+    articleTag,
+    articleClassification,
+    state,
+    draft,
+    articleCreateUser,
+    cover,
+    id = ''
+  ) {
+  if (id) {
+    return article.update({
+      articleTitle: articleTitle,
+      articleMin: articleMin,
+      articleContent: articleContent,
+      createTime: createTime,
+      articleTag: articleTag,
+      articleClassification: articleClassification,
+      state: state,
+      draft: draft,
+      articleCreateUser: articleCreateUser,
+      cover: cover
+    }, {
+      where: {
+        id: id
+      }
+    })
+  } else {
+    return article.create({
+      articleTitle: articleTitle,
+      articleMin: articleMin,
+      articleContent: articleContent,
+      createTime: createTime,
+      articleTag: articleTag,
+      articleClassification: articleClassification,
+      state: state,
+      draft: draft,
+      articleCreateUser: articleCreateUser,
+      cover: cover
+    })
+  }
 }
 
 exports.selectArticle = function (articleTitle) {

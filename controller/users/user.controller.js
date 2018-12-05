@@ -108,7 +108,6 @@ class user {
         res.send(dataModel(0, '该用户不存在', {}))
       }
     }).catch((data) => {
-      console.log(data)
       res.send(dataModel(-1, '服务器忙', {}))
     })
   }

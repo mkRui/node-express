@@ -19,7 +19,7 @@ const tag = sequelize.define('tag_control', {
     field: 'tag_instructions'
   },
   createTime: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.DATE,
     field: 'create_time'
   }
 }, {

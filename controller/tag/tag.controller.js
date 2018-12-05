@@ -22,11 +22,15 @@ class tag {
    */
 
   static allTagPage (req, res, next) {
-    let {pageNo, pageSize, tagState} = req.query
+    let {
+      pageNo,
+      pageSize,
+      tagState = ''
+    } = req.query
     tagModel.tagPage(Number(pageSize), (pageNo - 1) * pageSize, tagState).then((data) => {
       res.send(dataModel(1, '', {
-        pageNo: pageNo,
-        pageSize: pageSize,
+        pageNo: Number(pageNo),
+        pageSize: Number(pageSize),
         totalCount: data.count,
         list: data.rows
       }))
@@ -83,9 +87,9 @@ class tag {
    */
 
   static updateTagInfo (req, res, next) {
-    console.log(1)
     let {id, instructions} = req.body
     tagModel.updateTag(id, instructions).then((data) => {
+      console.log(data)
       res.send(dataModel(1, '修改成功', {}))
     }).catch((data) => {
       res.send(dataModel(-1, '服务器忙', {}))

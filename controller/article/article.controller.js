@@ -34,7 +34,9 @@ class article {
    * 
    * @param {submit} 文章发布地址 1 已发布 0 草稿箱
    * 
-   * @param {articleCreateUser} 文章发布人 不用传输直接读取session
+   * @param {articleCreateUser} 文章发布人 不用传输直接读取session\
+   * 
+   * @param {cover} 文章封面
    */
 
   static addArticle (req, res, next) {
@@ -45,31 +47,45 @@ class article {
       tag,
       state = 1,
       submit = 1,
-      content
+      content,
+      cover,
+      id = ''
     } = req.body
     if (req.session.init) {
       articleControl.selectArticle(title).then((data) => {
         if (data.length) {
           return false
         } else {
-          return articleControl.addArticle(title, minTitle, content, new Date().getTime(), tag, classify, state, submit, req.session.init.nickName)
+          return articleControl.addArticle(
+            title,
+            minTitle,
+            content,
+            new Date().getTime(),
+            tag,
+            classify,
+            state,
+            submit,
+            req.session.init.nickName,
+            cover,
+            id
+          )
         }
       }).then((data) => {
         if (data) {
           if (Number(submit) === 1) {
             res.send(dataModel(1, '发布成功', {}))
           } else {
-            res.send(dataModel(1, '已存入草稿箱', {}))
+            res.send(dataModel(-1, '已存入草稿箱', {}))
           }
         } else {
-          res.send(dataModel(1, '文章标题重复 请更换标题', {}))
+          res.send(dataModel(-1, '文章标题重复 请更换标题', {}))
         }
       }).catch((data) => {
         console.log(data)
         res.send(dataModel(-1, '服务器忙', {}))
       })
     } else {
-      res.send(dataModel(1, '请登录', {}))
+      res.send(dataModel(-2, '请登录', {}))
     }
   }
 
@@ -146,25 +162,37 @@ class article {
    */
 
   static articleDetail (req, res, next) {
-    let {id} = req.body
+    let {id} = req.query
     let articleInfo
     articleControl.selectArticle(id).then((data) => {
-      let {articleTitle, articleMin, articleContent, praise, readArticleNumber, createTime} = data[0]
+      let {
+        id,
+        articleTitle,
+        articleMin,
+        articleContent,
+        praise,
+        readArticleNumber,
+        createTime,
+        articleTag,
+        articleClassification,
+        cover,
+        state,
+        draft
+      } = data[0]
       articleInfo = {
-        articleTitle: articleTitle,
-        articleMin: articleMin,
-        articleContent: articleContent,
+        id: Number(id),
+        title: articleTitle,
+        titleMin: articleMin,
+        content: articleContent,
         praise: Number(praise),
-        readArticleNumber: Number(readArticleNumber),
-        createTime: Number(createTime)
+        readerNum: Number(readArticleNumber),
+        createTime: createTime,
+        tag: articleTag,
+        classify: articleClassification,
+        cover: cover,
+        state: Number(state),
+        draft: Number(draft)
       }
-      return Promise.all([
-        tag.selectTagList(data[0].articleTag),
-        tag.selectTagList(data[0].articleClassification)
-      ])
-    }).then((data) => {
-      articleInfo.tagList = data[0]
-      articleInfo.classifyList = data[1][0]
       res.send(dataModel(1, '', articleInfo))
     }).catch((data) => {
       console.log(data)
