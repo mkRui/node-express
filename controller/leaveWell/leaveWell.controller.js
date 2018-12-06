@@ -27,9 +27,9 @@ class leaveController {
       return leaveModel.leaveWellPage(Number(pageSize), (pageNo - 1) * pageSize)      
     }).then((data) => {
       res.send(dataModel(1, '', {
-        totalCount: data.count,
-        pageSize: pageSize,
-        pageNo: pageNo,
+        totalCount: Number(data.count),
+        pageSize: Number(pageSize),
+        pageNo: Number(pageNo),
         list: data.rows
       }))
     }).catch((data) => {

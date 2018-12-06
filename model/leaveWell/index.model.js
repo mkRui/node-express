@@ -11,7 +11,7 @@ const leaveWell = sequelize.define('leave_control', {
     field: 'leave_user'
   },
   leaveTime: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.DATE,
     field: 'leave_time'
   },
   leaveContent: {
