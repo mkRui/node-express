@@ -52,6 +52,10 @@ const article = sequelize.define('article_control', {
   cover: {
     type: Sequelize.STRING,
     field: 'article_cover'
+  },
+  flag: {
+    type: Sequelize.INTEGER,
+    field: 'article_flag'
   }
 }, {
   timestamps: false,
@@ -131,6 +135,10 @@ exports.selectArticlePage = function (state, submit, tag, classify, keyWord, pag
         $like: `%${keyWord}%`
       }
     },
+    order: [
+      ['id', 'DESC'],
+      ['article_flag', 'DESC']
+    ],
     offset: pageNo,
     limit: pageSize
   })

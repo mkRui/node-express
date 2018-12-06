@@ -43,10 +43,52 @@ class global {
    * @param {authorImg} 作者大头像
    */
 
-  static globalUpdate (req, res, next) {
-    let {title, cooperation, movie, music, hobby, feelingsTitle, feelingsMinTitle, feelingsContent, introduce, codeCooperation, authorTitle, authorFace, authorImg} = req.body
-    globalModel.updateGlobal(title, cooperation, movie, music, hobby, feelingsTitle, feelingsMinTitle, feelingsContent, introduce, codeCooperation, authorTitle, authorFace, authorImg).then((data) => {
+  static editGlobal (req, res, next) {
+    let {
+      title,
+      cooperation,
+      movie,
+      music,
+      hobby,
+      feelingsTitle,
+      feelingsMinTitle,
+      feelingsContent,
+      introduce,
+      codeCooperation,
+      authorTitle,
+      authorFace,
+      authorImg
+    } = req.body
+    globalModel.updateGlobal(
+      title,
+      cooperation,
+      movie,
+      music,
+      hobby,
+      feelingsTitle,
+      feelingsMinTitle,
+      feelingsContent,
+      introduce,
+      codeCooperation,
+      authorTitle,
+      authorFace,
+      authorImg)
+    .then((data) => {
       res.send(dataModel(1, '保存成功', {}))
+    }).catch((data) => {
+      res.send(dataModel(-1, '服务器忙', {}))
+    })
+  }
+
+  /**
+   * 
+   * @param { id } 全局设置id 
+   */
+  static detailGlobal (req, res, next) {
+    let { id } = req.query
+    globalModel.detailGlobal(id)
+    .then((data) => {
+      res.send(dataModel(1, '', data[0]))
     }).catch((data) => {
       res.send(dataModel(-1, '服务器忙', {}))
     })

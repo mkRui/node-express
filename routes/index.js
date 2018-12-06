@@ -70,7 +70,8 @@ router.get('/panel/submitArticle', controller.panel.submitArticle)
 router.get('/panel/articleRead', controller.panel.articleRead)
 
 // 全局设置
-router.post('/global', controller.global.globalUpdate)
+router.post('/editGlobal', controller.global.editGlobal)
+router.get('/detailGlobal', controller.global.detailGlobal)
 
 // 评论控制
 router.post('/comments/addComment', controller.comments.addComment)

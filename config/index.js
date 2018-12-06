@@ -33,6 +33,6 @@ exports.DATA = (code, messgae, result) => {
 }
 
 exports.EMAIL = {
-  emailUser: argv.emailUser || '1102163949@qq.com',
-  emailPass: argv.emailPass || 'hmzwekvdqpcqgabi'
+  emailUser: argv.emailUser,
+  emailPass: argv.emailPass
 }

@@ -59,7 +59,21 @@ const global = sequelize.define('global', {
   freezeTableName: true
 })
 
-exports.updateGlobal = function (title, cooperation, movie, music, hobby, feelingsTitle, feelingsMinTitle, feelingsContent, introduce, codeCooperation, authorTitle, authorFace, authorImg) {
+exports.updateGlobal = function (
+  title,
+  cooperation,
+  movie,
+  music,
+  hobby,
+  feelingsTitle,
+  feelingsMinTitle,
+  feelingsContent,
+  introduce,
+  codeCooperation,
+  authorTitle,
+  authorFace,
+  authorImg
+) {
   return global.update({
     title: title,
     cooperation: cooperation,
@@ -77,6 +91,14 @@ exports.updateGlobal = function (title, cooperation, movie, music, hobby, feelin
   }, {
     where: {
       id: 1
+    }
+  })
+}
+
+exports.detailGlobal = function (id) {
+  return global.findAll({
+    where: {
+      id: id
     }
   })
 }
