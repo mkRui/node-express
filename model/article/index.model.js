@@ -144,7 +144,7 @@ exports.selectArticlePage = function (state, submit, tag, classify, keyWord, pag
   })
 }
 
-exports.selectArticle = function (id) {
+exports.selectArticleId = function (id) {
   return article.findAll({
     where: {
       id: id
@@ -160,8 +160,14 @@ exports.deleteArticle = function (id) {
   })
 }
 
-exports.selectAllArticle = function () {
-  return article.findAll()
+exports.searchArticle = function (articleTitle = '') {
+  return article.findAll({
+    where: {
+      articleTitle: {
+        $like: `%${articleTitle}%`
+      }
+    }
+  })
 }
 
 exports.articleRead = function () {

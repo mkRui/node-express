@@ -60,6 +60,8 @@ router.get('/article/articlePage', controller.article.articlePage)
 
 router.get('/article/articleDetail', controller.article.articleDetail)
 
+router.get('/article/searchArticle', controller.article.searchArticle)
+
 router.post('/article/deleteArticle', controller.article.deleteArticle)
 
 // 面板
@@ -74,6 +76,8 @@ router.post('/editGlobal', controller.global.editGlobal)
 router.get('/detailGlobal', controller.global.detailGlobal)
 
 // 评论控制
+router.get('/comments/getCommentsList', controller.comments.commentsList)
+
 router.post('/comments/addComment', controller.comments.addComment)
 
 router.post('/comments/deleteComment', controller.comments.deleteComment)

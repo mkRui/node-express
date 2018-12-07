@@ -139,7 +139,6 @@ class article {
       pageNo = 1,
       pageSize = 5
     } = req.query
-    console.log(req.query)
     articleControl.selectArticlePage(state, submit, tag, classify, keyWord, Number(pageNo - 1) * pageSize, Number(pageSize)).then((data) => {
       res.send(dataModel(1, '', {
         pageNo: Number(pageNo),
@@ -148,7 +147,6 @@ class article {
         list: data.rows
       }))
     }).catch((data) => {
-      console.log(data)
       res.send(dataModel(-1, '服务器忙', {}))
     })
   }
@@ -215,6 +213,27 @@ class article {
       res.send(dataModel(-1, '服务器忙', {}))
     })
   }
+
+  /**
+   * @class searchArticle
+   * 
+   * @param articleTitle
+   */
+
+   static searchArticle (req, res, next) {
+    let {
+      articleTitle = ''
+    } = req.query
+    articleControl.searchArticle(articleTitle)
+    .then((data) => {
+      res.send(dataModel(1, '', data))
+    }).catch((data) => {
+      res.send(dataModel(-1, '服务器忙', {}))
+    })
+   }
+
+
+
 }
 
 module.exports = article

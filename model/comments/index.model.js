@@ -11,15 +11,19 @@ const comments = sequelize.define('comments', {
     field: 'comments_user'
   },
   commentsTime: {
-    type: Sequelize.STRING,
+    type: Sequelize.DATE,
     field: 'comments_time'
   },
   commentsArticle: {
     type: Sequelize.STRING,
     field: 'comments_article'
   },
+  commentsArticleId: {
+    type: Sequelize.INTEGER,
+    field: 'comments_articleId'
+  },
   commentsPraise: {
-    type: Sequelize.STRING,
+    type: Sequelize.INTEGER,
     field: 'comments_praise'
   },
   commentsUserMin: {
@@ -27,7 +31,7 @@ const comments = sequelize.define('comments', {
     field: 'comments_user_min'
   },
   commentsParentid: {
-    type: Sequelize.STRING,
+    type: Sequelize.INTEGER,
     field: 'comments_parentid'
   }
 }, {
@@ -35,10 +39,34 @@ const comments = sequelize.define('comments', {
   freezeTableName: true
 })
 
-exports.addComment = function (commentsUser, commentsArticle, commentsUserMin, commentsParentid, commentsContent) {
+exports.getCommentList = function (articleId, pageNo, pageSize) {
+  if (articleId) {
+    return comments.findAndCountAll({
+      where: {
+        commentsArticleId: articleId
+      },
+      order: [
+        ['id', 'DESC']
+      ],
+      offset: pageNo,
+      limit: pageSize
+    })
+  } else {
+    return comments.findAndCountAll({
+      order: [
+        ['id', 'DESC'],
+      ],
+      offset: pageNo,
+      limit: pageSize
+    })
+  }
+}
+
+exports.addComment = function (commentsUser, commentsArticleId, commentsArticle, commentsUserMin, commentsParentid, commentsContent) {
   return comments.create({
     commentsUser: commentsUser,
     commentsArticle: commentsArticle,
+    commentsArticleId: commentsArticleId,
     commentsUserMin: commentsUserMin,
     commentsParentid: commentsParentid,
     commentsContent: commentsContent,
@@ -49,8 +77,10 @@ exports.addComment = function (commentsUser, commentsArticle, commentsUserMin, c
 exports.deleteComment = function (id) {
   return comments.destroy({
     where: {
-      id: id,
-      commentsParentid: id
+      $or: {
+        id: id,
+        commentsParentid: id
+      }
     }
   })
 }
