@@ -29,6 +29,8 @@ router.post('/user/updateInfo', controller.user.updateInfo)
 
 router.get('/user/allUserList', controller.user.allUserList)
 
+router.get('/user/getUserPage', controller.user.getUserPage)
+
 router.post('/user/logOut', controller.user.logOut)
 
 router.post('/user/updateUserface', uploadImg.single('fileName'), controller.user.updateUserface)

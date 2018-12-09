@@ -15,11 +15,11 @@ const userControl = sequelize.define('user_control', {
     field: 'password'
   },
   lastLogin: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.DATE,
     field: 'last_login'
   },
   userFace: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.STRING,
     field: 'userface'
   },
   email: {
@@ -31,7 +31,7 @@ const userControl = sequelize.define('user_control', {
     field: 'nickname'
   },
   createTime: {
-    type: Sequelize.STRING,
+    type: Sequelize.DATE,
     field: 'createtime'
   },
   userState: {
@@ -103,6 +103,16 @@ exports.updateUserState = (id, state) => {
   })
 }
 
+exports.updateLoginTime = (id) => {
+  return userControl.update({
+    lastLogin: new Date().getTime(),
+  }, {
+    where: {
+      id: id
+    }
+  })
+}
+
 exports.updateUserface = (id, userFace) => {
   return userControl.update({
     userFace: userFace,
@@ -121,7 +131,7 @@ exports.selectAllUser = () => {
 
 // offset 代表初始值
 // limit 分页数量
-exports.userListPage = (pageSize, pageNo) => {
+exports.userListPage = (pageNo, pageSize) => {
   return userControl.findAndCountAll({
     offset: pageNo,
     limit: pageSize

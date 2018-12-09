@@ -48,7 +48,12 @@ class user {
    * 
    */
   static addUser (req, res, next) {
-    let {userName, passWord, nickName, email} = req.body
+    let {
+      userName = '',
+      passWord,
+      nickName,
+      email
+    } = req.body
     // md5 加密
     if (req.body.passWord) {
       passWord = md5(req.body.passWord)
@@ -58,7 +63,7 @@ class user {
       if (!data.length) {
         return userModel.addUser(userName, passWord, nickName, email)
       } else {
-        res.send(dataModel(1, '昵称已占用', {}))
+        res.send(dataModel(-1, '昵称已占用', {}))
       }
     }).then((data) => {
       if (data) {
@@ -88,6 +93,7 @@ class user {
     userModel.selectUser(nickName, passWord).then((data) => {
       if (data[0]) {
         let { id, nickName, createTime, userFace, user_role, userState } = data[0]
+        userModel.updateLoginTime(id)
         req.session.init = {
           id: id,
           nickName: nickName,
@@ -219,9 +225,15 @@ class user {
    * @param {pageSize} 文章每夜数据
    */
 
-  static allUserSelect (req, res, next) {
-    userModel.userListPage().then((data) => {
-      res.send(dataModel(1, '', data))
+  static getUserPage (req, res, next) {
+    let { pageNo, pageSize } = req.query
+    userModel.userListPage(Number(pageNo - 1) * pageSize, Number(pageSize)).then((data) => {
+      res.send(dataModel(1, '', {
+        pageNo: Number(pageNo),
+        pageSize: Number(pageSize),
+        totalCount: data.count,
+        list: data.rows
+      }))
     }).catch((data) => {
       res.send(dataModel(-1, '服务器忙', {}))
     })
