@@ -30,7 +30,6 @@ class panel {
       })
       res.send(dataModel(1, '', statisticalList))
     }).catch((data) => {
-      console.log(data)
       res.send(dataModel(-1, '服务器忙', {}))
     })
   }
@@ -45,7 +44,6 @@ class panel {
     articleControl.articleSubmit().then((data) => {
       res.send(dataModel(1, '', data[0]))
     }).catch((data) => {
-      console.log(data)
       res.send(dataModel(-1, '服务器忙', {}))
     })
   }
@@ -60,7 +58,6 @@ class panel {
     articleControl.articleRead().then((data) => {
       res.send(dataModel(1, '', data[0]))
     }).catch((data) => {
-      console.log(data)
       res.send(dataModel(-1, '服务器忙', {}))
     })
   }
