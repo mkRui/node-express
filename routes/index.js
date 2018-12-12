@@ -73,6 +73,8 @@ router.get('/panel/submitArticle', controller.panel.submitArticle)
 
 router.get('/panel/articleRead', controller.panel.articleRead)
 
+router.get('/panel/getHotTag', controller.panel.getHotTag)
+
 // 全局设置
 router.post('/editGlobal', controller.global.editGlobal)
 router.get('/detailGlobal', controller.global.detailGlobal)

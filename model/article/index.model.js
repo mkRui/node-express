@@ -15,7 +15,8 @@ const article = sequelize.define('article_control', {
     field: 'article_content'
   },
   praise: {
-    type: Sequelize.INTEGER
+    type: Sequelize.INTEGER,
+    field: 'praise'
   },
   createTime: {
     type: Sequelize.DATE,
@@ -182,4 +183,14 @@ exports.articleRead = function () {
 // 文章发布数返回数据
 exports.articleSubmit = function () {
   return sequelize.query('SELECT article_create_user as articleCreateUser,COUNT(*) as Count FROM article_control GROUP BY article_create_user LIMIT 5')
+}
+
+// 热门标签返回数据
+/**
+ * @return tag Count
+ * 
+ * 标签和数量
+ */
+exports.hotTag = function () {
+  return sequelize.query('SELECT article_tag as tag,COUNT(*) as Count FROM article_control GROUP BY article_tag LIMIT 10')
 }

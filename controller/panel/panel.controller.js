@@ -62,6 +62,17 @@ class panel {
     })
   }
 
+  /**
+   * @class getHotTag
+   */
+
+  static getHotTag (req, res, next) {
+    articleControl.hotTag().then((data) => {
+      res.send(dataModel(1, '', data[0]))
+    }).catch((data) => {
+      res.send(dataModel(-1, '服务器忙', {}))
+    })
+  }
 
 }
 
