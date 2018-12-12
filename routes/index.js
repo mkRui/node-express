@@ -64,6 +64,8 @@ router.get('/article/articleDetail', controller.article.articleDetail)
 
 router.get('/article/searchArticle', controller.article.searchArticle)
 
+router.get('/article/getHotArticle', controller.article.getHotArticle)
+
 router.post('/article/deleteArticle', controller.article.deleteArticle)
 
 // 面板

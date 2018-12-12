@@ -152,6 +152,26 @@ class article {
   }
 
   /**
+   * 
+   * @param {pageNo} 页数 
+   * 
+   * @param {pageSize} 每页多少个 
+   */
+  static getHotArticle (req, res, next) {
+    let { pageNo, pageSize } = req.query
+    articleControl.hotArticleList(Number(pageNo - 1) * pageSize, Number(pageSize)).then((data) => {
+      res.send(dataModel(1, '', {
+        pageNo: Number(pageNo),
+        pageSize: Number(pageSize),
+        totalCount: data.count,
+        list: data.rows
+      }))
+    }).catch((data) => {
+      res.send(dataModel(-1, '服务器忙', {}))
+    })
+  }
+
+  /**
    * @class articleDetail
    * 
    * @static articleDetail
