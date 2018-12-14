@@ -53,7 +53,7 @@ class article {
     } = req.body
     if (req.session.init) {
       articleControl.selectArticle(title).then((data) => {
-        if (data.length) {
+        if (data.length && id === '') {
           return false
         } else {
           return articleControl.addArticle(
@@ -182,7 +182,7 @@ class article {
   static articleDetail (req, res, next) {
     let {id} = req.query
     let articleInfo
-    articleControl.selectArticle(id).then((data) => {
+    articleControl.selectArticleId(id).then((data) => {
       let {
         id,
         articleTitle,
@@ -193,6 +193,7 @@ class article {
         createTime,
         articleTag,
         articleClassification,
+        articleComments,
         cover,
         state,
         draft
@@ -209,7 +210,8 @@ class article {
         classify: articleClassification,
         cover: cover,
         state: Number(state),
-        draft: Number(draft)
+        draft: Number(draft),
+        comments: Number(articleComments)
       }
       res.send(dataModel(1, '', articleInfo))
     }).catch((data) => {
