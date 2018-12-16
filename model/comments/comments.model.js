@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const sequelize = require('./../../config/index').SEQUELIZE;
+const sequelize = require('../../config/index').SEQUELIZE;
 
 const comments = sequelize.define('comments', {
   commentsContent: {
@@ -39,11 +39,15 @@ const comments = sequelize.define('comments', {
   freezeTableName: true
 })
 
-exports.getCommentList = function (articleId, pageNo, pageSize) {
+// 获取当前登录用户的评论列表
+exports.getCommentList = function (articleId, commentsUserMin, pageNo, pageSize) {
   if (articleId) {
     return comments.findAndCountAll({
       where: {
-        commentsArticleId: articleId
+        $or: [
+          {commentsArticleId: articleId},
+          {commentsUserMin: commentsUserMin}
+        ]
       },
       order: [
         ['id', 'DESC']
@@ -56,12 +60,24 @@ exports.getCommentList = function (articleId, pageNo, pageSize) {
       order: [
         ['id', 'DESC'],
       ],
+      where: {
+        commentsUserMin: commentsUserMin
+      },
       offset: pageNo,
       limit: pageSize
     })
   }
 }
 
+exports.getArticleComments = function (commentsArticleId) {
+  return comments.findAll({
+    where: {
+      commentsArticleId: commentsArticleId
+    }
+  })
+}
+
+// 新增评论
 exports.addComment = function (commentsUser, commentsArticleId, commentsArticle, commentsUserMin, commentsParentid, commentsContent) {
   return comments.create({
     commentsUser: commentsUser,
@@ -74,6 +90,7 @@ exports.addComment = function (commentsUser, commentsArticleId, commentsArticle,
   })
 }
 
+// 删除评论
 exports.deleteComment = function (id) {
   return comments.destroy({
     where: {
@@ -85,6 +102,7 @@ exports.deleteComment = function (id) {
   })
 }
 
+// 评论详情
 exports.commentDetails = function (id) {
   return comments.findAll({
     where: {

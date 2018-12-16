@@ -4,7 +4,7 @@
  * @static comments
  */
 
-const commentsModel = require('./../../model/comments/index.model')
+const commentsModel = require('../../model/comments/comments.model')
 
 const email = require('./../../tool/email').sendEmail
 
@@ -64,55 +64,81 @@ class comments {
    * @param {parentId} 评论父id (只要第一层评论下)
    */
 
+   /**
+    * 
+    * @param {articleId} 文章id 
+    * 
+    * @param {user} 评论人
+    * 
+    * @param {email} 邮箱
+    * 
+    * @param {url} web站点
+    * 
+    * @param {face} face
+    * 
+    * @param {parentId} 评论父id
+    * 
+    * @param {replyUser} 回复评论人
+    */
+
   static addComment (req, res, next) {
-    let {commentUser, articleId, article, commentMinUser, parentId, content} = req.body
-    if (req.session.init) {
-      commentsModel.addComment(commentUser, articleId, article, commentMinUser, parentId, content).then((data) => {
-        if (commentMinUser) {
-          commentsModel.selectUser(commentMinUser).then((nick) => {
-            email({
-              to: nick[0][0].email,
-              subject: `${commentUser}评论了您的评论`,
-              text: `${commentUser}回复了您的评论 请注意查收`,
-              html: `<div>
-                      <p style='font-size: 24px;'>${commentUser}回复了您的评论</p>
-                      <img style='width: 100%;' src="cid:00000001"/>
-                      <p style='width: 100%; text-align: right;'><strong>[<a href='http://www.scrscript.com/static/BLOG.png'>点击查看详情</a>]</strong></p>
-                    </div>`,
-              attachments: [{
-                filename: '怎样.png',
-                path: 'http://www.scrscript.com/static/BLOG.png',
-                cid: '00000001'
-              }]
-            })
-          })
-        } else {
-          commentsModel.articleUser(id).then((nick) => {
-            email({
-              to: 'scrscript@163.com',
-              subject: `${commentUser}评论了您的文章`,
-              text: `${commentUser}评论了您的文章, 请注意查收`,
-              html: `<div>
-                      <p style='font-size: 24px;'>${commentUser}评论了您的文章</p>
-                      <img style='width: 100%;' src="cid:00000001"/>
-                      <p style='width: 100%; text-align: right;'><strong>[<a href='http://www.scrscript.com/static/BLOG.png'>点击查看详情</a>]</strong></p>
-                    </div>`,
-              attachments: [{
-                filename: '怎样.png',
-                path: 'http://www.scrscript.com/static/BLOG.png',
-                cid: '00000001'
-              }]
-            })
-          })
-        }
-        res.send(dataModel(1, '评论成功', {}))
-      }).catch((data) => {
-        console.log(data)
-        res.send(dataModel(-1, '服务器忙', {}))
-      })
-    } else {
-      res.send(dataModel(-2, '请登录', {}))
-    }
+    let {
+      articleId,
+      user,
+      email,
+      url = '',
+      face = '',
+      parentId,
+      replyUser
+    } = req.body
+    // let {commentUser, articleId, article, commentMinUser, parentId, content} = req.body
+    // if (req.session.init) {
+    //   commentsModel.addComment(commentUser, articleId, article, commentMinUser, parentId, content).then((data) => {
+    //     if (commentMinUser) {
+    //       commentsModel.selectUser(commentMinUser).then((nick) => {
+    //         email({
+    //           to: nick[0][0].email,
+    //           subject: `${commentUser}评论了您的评论`,
+    //           text: `${commentUser}回复了您的评论 请注意查收`,
+    //           html: `<div>
+    //                   <p style='font-size: 24px;'>${commentUser}回复了您的评论</p>
+    //                   <img style='width: 100%;' src="cid:00000001"/>
+    //                   <p style='width: 100%; text-align: right;'><strong>[<a href='http://www.scrscript.com/static/BLOG.png'>点击查看详情</a>]</strong></p>
+    //                 </div>`,
+    //           attachments: [{
+    //             filename: '怎样.png',
+    //             path: 'http://www.scrscript.com/static/BLOG.png',
+    //             cid: '00000001'
+    //           }]
+    //         })
+    //       })
+    //     } else {
+    //       commentsModel.articleUser(id).then((nick) => {
+    //         email({
+    //           to: 'scrscript@163.com',
+    //           subject: `${commentUser}评论了您的文章`,
+    //           text: `${commentUser}评论了您的文章, 请注意查收`,
+    //           html: `<div>
+    //                   <p style='font-size: 24px;'>${commentUser}评论了您的文章</p>
+    //                   <img style='width: 100%;' src="cid:00000001"/>
+    //                   <p style='width: 100%; text-align: right;'><strong>[<a href='http://www.scrscript.com/static/BLOG.png'>点击查看详情</a>]</strong></p>
+    //                 </div>`,
+    //           attachments: [{
+    //             filename: '怎样.png',
+    //             path: 'http://www.scrscript.com/static/BLOG.png',
+    //             cid: '00000001'
+    //           }]
+    //         })
+    //       })
+    //     }
+    //     res.send(dataModel(1, '评论成功', {}))
+    //   }).catch((data) => {
+    //     console.log(data)
+    //     res.send(dataModel(-1, '服务器忙', {}))
+    //   })
+    // } else {
+    //   res.send(dataModel(-2, '请登录', {}))
+    // }
   }
 
   /**
