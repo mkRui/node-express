@@ -92,7 +92,7 @@ class user {
     }
     userModel.selectUser(nickName, passWord).then((data) => {
       if (data[0]) {
-        let { id, nickName, createTime, userFace, user_role, userState } = data[0]
+        let { id, nickName, createTime, userFace, user_role, userState, email } = data[0]
         userModel.updateLoginTime(id)
         req.session.init = {
           id: id,
@@ -100,7 +100,8 @@ class user {
           createTime: createTime,
           userFace: userFace,
           userState: userState,
-          userRole: user_role
+          userRole: user_role,
+          email: email
         }
         res.send(dataModel(1, '登录成功', {
           id: id,
@@ -108,7 +109,8 @@ class user {
           createTime: createTime,
           userFace: userFace,
           userState: userState,
-          userRole: user_role
+          userRole: user_role,
+          email: email
         }))
       } else {
         res.send(dataModel(0, '该用户不存在', {}))

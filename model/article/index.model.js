@@ -186,6 +186,11 @@ exports.selectAllArticle = function () {
   return article.findAll()
 }
 
+// 文章点赞
+exports.articlePraise = function (id) {
+  return sequelize.query(`UPDATE rticle_control SET praise=praise+1 WHERE id=${id}`)
+}
+
 // 文章阅读量 返回数据
 exports.articleRead = function () {
   return sequelize.query('SELECT read_article_number as readArticleNumber, article_title as articleTitle  FROM article_control ORDER BY read_article_number DESC LIMIT 5')

@@ -84,6 +84,8 @@ router.get('/detailGlobal', controller.global.detailGlobal)
 // 评论控制
 router.get('/comments/getCommentsList', controller.comments.commentsList)
 
+router.get('/comments/getCommentsArticle', controller.comments.getCommentsArticle)
+
 router.post('/comments/addComment', controller.comments.addComment)
 
 router.post('/comments/deleteComment', controller.comments.deleteComment)

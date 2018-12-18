@@ -6,6 +6,8 @@
 
 const commentsModel = require('../../model/comments/comments.model')
 
+const reviewersModel = require('../../model/comments/reviewers.model')
+
 const email = require('./../../tool/email').sendEmail
 
 const dataModel = require('./../../config/index').DATA
@@ -46,24 +48,6 @@ class comments {
 
 
 
-  /**
-   * @class addComments 添加评论
-   * 
-   * @static addComments
-   * 
-   * @param {articleId} 文章id
-   * 
-   * @param {article} 文章id
-   * 
-   * @param {content} 评论内容
-   * 
-   * @param {commentUser} 评论人
-   * 
-   * @param {commentMinUser} 回复评论人
-   * 
-   * @param {parentId} 评论父id (只要第一层评论下)
-   */
-
    /**
     * 
     * @param {articleId} 文章id 
@@ -79,18 +63,85 @@ class comments {
     * @param {parentId} 评论父id
     * 
     * @param {replyUser} 回复评论人
+    * 
+    * @param {article} 文章
+    * 
+    * @param {content} 内容
     */
 
   static addComment (req, res, next) {
     let {
+      article,
       articleId,
       user,
       email,
       url = '',
       face = '',
       parentId,
-      replyUser
+      replyUser,
+      content
     } = req.body
+
+    if (req.session.init || req.session.blog) {
+      const session = req.session.init || req.session.blog
+      user = session.nickName
+      email = session.email
+      face = session.userFace
+    }
+
+    if (!user && !email) {
+      res.send(dataModel(-2, '请输入昵称/邮箱', {}))
+    } else {
+      if (req.session.blog.email || req.session.init.email) {
+        // 已经评论过 且 已经存入数据库的人员
+        commentsModel.addComment(user, articleId, article, replyUser, parentId, content).then(() => {
+          if (parentId) {
+            return Promise.all([
+              reviewersModel.getReviewers('', parentId),
+              commentsModel.commentNum(articleId)
+            ])
+          } else {
+            // 没有被评论人 说明评论的是文章 给文章发布人发送邮件
+          }
+        }).then((data) => {
+          // 查找并发邮件
+          console.log(data)
+          res.send(dataModel(1, '评论成功', {
+            ...req.session.blog
+          }))
+        }).catch(() => {
+          res.send(dataModel(-1, '服务器忙', {}))
+        })
+      } else {
+        reviewersModel.getReviewers(email).then((data) => {
+          if (data.length) {
+            req.session.blog = {
+              nickName: user,
+              email: email,
+              userFace: face,
+              url: data[0].url
+            }
+            if (parentId) {
+              // 给被评论人发邮件
+              return Promise.all([
+                commentsModel.addComment(user, articleId, article, replyUser, parentId, content),
+                commentsModel.commentNum(articleId)
+              ])
+            } else {
+              // 评论的文章 给作者发邮件
+              return commentsModel.addComment(user, articleId, article, replyUser, parentId, content)
+            }
+          }
+        }).then(() => {
+          res.send(dataModel(1, '评论成功', {
+            ...req.session.blog
+          }))
+        }).catch(() => {
+          res.send(dataModel(-1, '服务器忙', {}))
+        })
+      }
+    }
+
     // let {commentUser, articleId, article, commentMinUser, parentId, content} = req.body
     // if (req.session.init) {
     //   commentsModel.addComment(commentUser, articleId, article, commentMinUser, parentId, content).then((data) => {
@@ -183,7 +234,7 @@ class comments {
    * @param {articleId} 文章id
    */
 
-   static commentPraise (req, res, next) {
+  static commentPraise (req, res, next) {
     let {articleId} = req.body
     commentsModel.commentPraise(articleId).then((data) => {
       res.send(dataModel(1, '点赞成功', {}))
@@ -191,7 +242,31 @@ class comments {
       console.log(data)
       res.send(dataModel(-1, '服务器忙', {}))
     })
-   }
+  }
+
+
+  /**
+   * @param {articleId} 文章id
+   * 
+   * @param {parentId} 父评论id
+   * 
+   * @param {pageNo} 页数
+   * 
+   * @param {pageSize} 每页个数
+   */
+  static getCommentsArticle (req, res, next) {
+    let {articleId, parentId, pageNo, pageSize} = req.query
+    commentsModel.getArticleComments(articleId, parentId, Number(pageNo - 1) * pageSize, Number(pageSize)).then((data) => {
+      res.send(dataModel(1, '', {
+        pageNo: Number(pageNo),
+        pageSize: Number(pageSize),
+        totalCount: data.count,
+        list: data.rows
+      }))
+    }).catch(() => {
+      res.send(dataModel(-1, '服务器忙', {}))
+    })
+  }
 }
 
 module.exports = comments

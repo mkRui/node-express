@@ -33,6 +33,14 @@ const comments = sequelize.define('comments', {
   commentsParentid: {
     type: Sequelize.INTEGER,
     field: 'comments_parentid'
+  },
+  commentsNum: {
+    type: Sequelize.STRING,
+    field: 'comments_user_min'
+  },
+  face: {
+    type: Sequelize.STRING,
+    field: 'comments_face'
   }
 }, {
   timestamps: false,
@@ -69,11 +77,14 @@ exports.getCommentList = function (articleId, commentsUserMin, pageNo, pageSize)
   }
 }
 
-exports.getArticleComments = function (commentsArticleId) {
-  return comments.findAll({
+exports.getArticleComments = function (commentsArticleId, commentsParentid, pageNo, pageSize) {
+  return comments.findAndCountAll({
     where: {
-      commentsArticleId: commentsArticleId
-    }
+      commentsArticleId: commentsArticleId,
+      commentsParentid: commentsParentid,
+    },
+    offset: pageNo,
+    limit: pageSize
   })
 }
 
@@ -111,8 +122,14 @@ exports.commentDetails = function (id) {
   })
 }
 
+// 评论点赞
 exports.commentPraise = function (id) {
   return sequelize.query(`UPDATE comments SET comments_praise=comments_praise+1 WHERE id=${id}`)
+}
+
+// 回复评论
+exports.commentNum = function (id) {
+  return sequelize.query(`UPDATE comments SET comments_num=comments_num+1 WHERE id=${id}`)
 }
 
 exports.articleUser = function (id) {

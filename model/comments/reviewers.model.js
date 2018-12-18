@@ -24,10 +24,13 @@ const reviewers = sequelize.define('user_comments', {
 })
 
 // 查找评论者
-exports.getReviewers = (email) => {
+exports.getReviewers = (email, id) => {
   return reviewers.findAll({
     where: {
-      email: email
+      $or: [
+        {email: email},
+        {id: id}
+      ]
     }
   })
 }
