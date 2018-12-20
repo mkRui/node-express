@@ -38,7 +38,7 @@ exports.getReviewers = (email, id) => {
 // 新增评论者 或者修改人员头像像
 exports.addReviewers = (name, email, url, face = '', id = '') => {
   if (id) {
-    return article.update({
+    return reviewers.update({
       face: face
     }, {
       where: {
@@ -46,7 +46,7 @@ exports.addReviewers = (name, email, url, face = '', id = '') => {
       }
     })
   } else {
-    return article.create({
+    return reviewers.create({
       name: name,
       email: email,
       url: url,

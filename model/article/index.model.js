@@ -188,7 +188,12 @@ exports.selectAllArticle = function () {
 
 // 文章点赞
 exports.articlePraise = function (id) {
-  return sequelize.query(`UPDATE rticle_control SET praise=praise+1 WHERE id=${id}`)
+  return sequelize.query(`UPDATE article_control SET praise=praise+1 WHERE id=${id}`)
+}
+
+// 文章评论增加
+exports.addCommentsNum = function (id) {
+  return sequelize.query(`UPDATE article_control SET article_comments=article_comments+1 WHERE id=${id}`)
 }
 
 // 文章阅读量 返回数据

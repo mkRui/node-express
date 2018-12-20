@@ -194,6 +194,7 @@ class article {
         articleTag,
         articleClassification,
         articleComments,
+        articleCreateUser,
         cover,
         state,
         draft
@@ -202,6 +203,7 @@ class article {
         id: Number(id),
         title: articleTitle,
         titleMin: articleMin,
+        createUser: articleCreateUser,
         content: articleContent,
         praise: Number(praise),
         readerNum: Number(readArticleNumber),
@@ -252,7 +254,11 @@ class article {
     }).catch((data) => {
       res.send(dataModel(-1, '服务器忙', {}))
     })
-   }
+  }
+
+  /**
+   * 
+   */
 
 
 

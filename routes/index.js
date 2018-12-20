@@ -88,6 +88,8 @@ router.get('/comments/getCommentsArticle', controller.comments.getCommentsArticl
 
 router.post('/comments/addComment', controller.comments.addComment)
 
+router.post('/comments/commentsPraise', controller.comments.commentPraise)
+
 router.post('/comments/deleteComment', controller.comments.deleteComment)
 
 router.post('/comments/commentDetails', controller.comments.commentDetails)

@@ -6,7 +6,11 @@
 
 const commentsModel = require('../../model/comments/comments.model')
 
-const reviewersModel = require('../../model/comments/reviewers.model')
+const reviewersModel = require('../../model/comments/reviewers.model.js')
+
+const articleModel = require('./../../model/article/index.model')
+
+const userModel = require('./../../model/user/index.model')
 
 const email = require('./../../tool/email').sendEmail
 
@@ -46,8 +50,6 @@ class comments {
   }
 
 
-
-
    /**
     * 
     * @param {articleId} 文章id 
@@ -64,79 +66,82 @@ class comments {
     * 
     * @param {replyUser} 回复评论人
     * 
-    * @param {article} 文章
+    * @param {replyid} 回复评论人id
     * 
     * @param {content} 内容
+    * 
+    * @param {adminflag} 是否为管理员所评论
+    * 
+    * @param {author} 作者
+    * 
     */
 
   static addComment (req, res, next) {
     let {
-      article,
       articleId,
       user,
       email,
       url = '',
       face = '',
-      parentId,
-      replyUser,
-      content
+      parentId = 0,
+      replyUser = '',
+      replyid = '',
+      author,
+      content,
+      adminflag = false
     } = req.body
-
-    if (req.session.init || req.session.blog) {
-      const session = req.session.init || req.session.blog
+    if (req.session.init) {
+      const session = req.session.init
       user = session.nickName
-      email = session.email
       face = session.userFace
     }
 
     if (!user && !email) {
       res.send(dataModel(-2, '请输入昵称/邮箱', {}))
     } else {
-      if (req.session.blog.email || req.session.init.email) {
-        // 已经评论过 且 已经存入数据库的人员
-        commentsModel.addComment(user, articleId, article, replyUser, parentId, content).then(() => {
-          if (parentId) {
-            return Promise.all([
-              reviewersModel.getReviewers('', parentId),
-              commentsModel.commentNum(articleId)
-            ])
-          } else {
-            // 没有被评论人 说明评论的是文章 给文章发布人发送邮件
-          }
+      if (req.session.blog) {
+        // 给回复人发送邮件
+        commentsModel.addComment(user, articleId, replyUser, parentId, content).then(() => {
+          return Promise.all([ 
+            reviewersModel.getReviewers(replyid),
+            articleModel.addCommentsNum(articleId)
+          ])
         }).then((data) => {
           // 查找并发邮件
-          console.log(data)
-          res.send(dataModel(1, '评论成功', {
-            ...req.session.blog
-          }))
+          res.send(dataModel(1, '评论成功', {}))
         }).catch(() => {
           res.send(dataModel(-1, '服务器忙', {}))
         })
       } else {
         reviewersModel.getReviewers(email).then((data) => {
           if (data.length) {
-            req.session.blog = {
-              nickName: user,
-              email: email,
-              userFace: face,
-              url: data[0].url
-            }
-            if (parentId) {
-              // 给被评论人发邮件
-              return Promise.all([
-                commentsModel.addComment(user, articleId, article, replyUser, parentId, content),
-                commentsModel.commentNum(articleId)
-              ])
-            } else {
-              // 评论的文章 给作者发邮件
-              return commentsModel.addComment(user, articleId, article, replyUser, parentId, content)
-            }
+            return data[0]
+          } else {
+            return reviewersModel.addReviewers(user, email, url, face)
           }
-        }).then(() => {
-          res.send(dataModel(1, '评论成功', {
-            ...req.session.blog
-          }))
-        }).catch(() => {
+        }).then(async (data) => {
+          if (parentId) {
+            await Promise.all([
+              commentsModel.addComment(user, articleId, replyUser, parentId, content, data.id),
+              commentsModel.commentNum(parentId),
+              articleModel.addCommentsNum(articleId)
+            ])
+          } else {
+            await Promise.all([
+              commentsModel.addComment(user, articleId, replyUser, parentId, content, data.id),
+              articleModel.addCommentsNum(articleId)
+            ])
+          }
+          if (adminflag) {
+            return userModel.selectNickName(parentId ? replyUser : author)
+          } else {
+            return reviewersModel.getReviewers('', replyid)
+          }
+        }).then((data) => {
+          console.log(data)
+          res.send(dataModel(1, '评论成功', {}))
+        }).catch((e) => {
+          console.log(e)
           res.send(dataModel(-1, '服务器忙', {}))
         })
       }
@@ -231,12 +236,12 @@ class comments {
    * 
    * @static commentPraise
    * 
-   * @param {articleId} 文章id
+   * @param {id}  评论id
    */
 
   static commentPraise (req, res, next) {
-    let {articleId} = req.body
-    commentsModel.commentPraise(articleId).then((data) => {
+    let {id} = req.body
+    commentsModel.commentPraise(id).then((data) => {
       res.send(dataModel(1, '点赞成功', {}))
     }).catch((data) => {
       console.log(data)

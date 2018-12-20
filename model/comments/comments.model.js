@@ -14,10 +14,6 @@ const comments = sequelize.define('comments', {
     type: Sequelize.DATE,
     field: 'comments_time'
   },
-  commentsArticle: {
-    type: Sequelize.STRING,
-    field: 'comments_article'
-  },
   commentsArticleId: {
     type: Sequelize.INTEGER,
     field: 'comments_articleId'
@@ -26,9 +22,13 @@ const comments = sequelize.define('comments', {
     type: Sequelize.INTEGER,
     field: 'comments_praise'
   },
-  commentsUserMin: {
+  replyUser: {
     type: Sequelize.STRING,
-    field: 'comments_user_min'
+    field: 'comments_replyuser'
+  },
+  replyUserId: {
+    type: Sequelize.STRING,
+    field: 'comments_replyid'
   },
   commentsParentid: {
     type: Sequelize.INTEGER,
@@ -36,11 +36,15 @@ const comments = sequelize.define('comments', {
   },
   commentsNum: {
     type: Sequelize.STRING,
-    field: 'comments_user_min'
+    field: 'comments_num'
   },
   face: {
     type: Sequelize.STRING,
     field: 'comments_face'
+  },
+  admin: {
+    type: Sequelize.INTEGER,
+    field: 'comments_admin'
   }
 }, {
   timestamps: false,
@@ -48,13 +52,13 @@ const comments = sequelize.define('comments', {
 })
 
 // 获取当前登录用户的评论列表
-exports.getCommentList = function (articleId, commentsUserMin, pageNo, pageSize) {
+exports.getCommentList = function (articleId, replyUser, pageNo, pageSize) {
   if (articleId) {
     return comments.findAndCountAll({
       where: {
         $or: [
           {commentsArticleId: articleId},
-          {commentsUserMin: commentsUserMin}
+          {replyUser: replyUser}
         ]
       },
       order: [
@@ -69,7 +73,7 @@ exports.getCommentList = function (articleId, commentsUserMin, pageNo, pageSize)
         ['id', 'DESC'],
       ],
       where: {
-        commentsUserMin: commentsUserMin
+        replyUser: replyUser
       },
       offset: pageNo,
       limit: pageSize
@@ -83,21 +87,26 @@ exports.getArticleComments = function (commentsArticleId, commentsParentid, page
       commentsArticleId: commentsArticleId,
       commentsParentid: commentsParentid,
     },
+    order: [
+      ['id', 'DESC'],
+      ['comments_praise', 'DESC']
+    ],
     offset: pageNo,
     limit: pageSize
   })
 }
 
 // 新增评论
-exports.addComment = function (commentsUser, commentsArticleId, commentsArticle, commentsUserMin, commentsParentid, commentsContent) {
+exports.addComment = function (commentsUser, commentsArticleId, replyUser, commentsParentid, commentsContent, replyUserId, admin = 0) {
   return comments.create({
     commentsUser: commentsUser,
-    commentsArticle: commentsArticle,
     commentsArticleId: commentsArticleId,
-    commentsUserMin: commentsUserMin,
+    replyUser: replyUser,
     commentsParentid: commentsParentid,
     commentsContent: commentsContent,
-    commentsTime: new Date().getTime()
+    commentsTime: new Date().getTime(),
+    replyUserId: replyUserId,
+    admin: admin
   })
 }
 
@@ -132,12 +141,9 @@ exports.commentNum = function (id) {
   return sequelize.query(`UPDATE comments SET comments_num=comments_num+1 WHERE id=${id}`)
 }
 
+// 关联查询的例子
 exports.articleUser = function (id) {
   return sequelize.query(`SELECT email FROM article_control as ar
   LEFT JOIN user_control ur ON ar.article_create_user=ur.nickname
   WHERE ar.id=${id}`)
-}
-
-exports.selectUser = function (nickname) {
-  return sequelize.query(`SELECT email FROM user_control WHERE nickName=${nickname}`)
 }
