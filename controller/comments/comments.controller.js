@@ -95,7 +95,6 @@ class comments {
       user = session.nickName
       face = session.userFace
     }
-
     if (!user && !email) {
       res.send(dataModel(-2, '请输入昵称/邮箱', {}))
     } else {
@@ -120,6 +119,7 @@ class comments {
             return reviewersModel.addReviewers(user, email, url, face)
           }
         }).then(async (data) => {
+          console.log(content)
           if (parentId) {
             await Promise.all([
               commentsModel.addComment(user, articleId, replyUser, parentId, content, data.id),
@@ -138,10 +138,8 @@ class comments {
             return reviewersModel.getReviewers('', replyid)
           }
         }).then((data) => {
-          console.log(data)
           res.send(dataModel(1, '评论成功', {}))
         }).catch((e) => {
-          console.log(e)
           res.send(dataModel(-1, '服务器忙', {}))
         })
       }
