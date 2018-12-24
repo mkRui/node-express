@@ -119,7 +119,6 @@ class comments {
             return reviewersModel.addReviewers(user, email, url, face)
           }
         }).then(async (data) => {
-          console.log(content)
           if (parentId) {
             await Promise.all([
               commentsModel.addComment(user, articleId, replyUser, parentId, content, data.id),

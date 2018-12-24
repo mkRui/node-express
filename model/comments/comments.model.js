@@ -52,13 +52,13 @@ const comments = sequelize.define('comments', {
 })
 
 // 获取当前登录用户的评论列表
-exports.getCommentList = function (articleId, replyUser, pageNo, pageSize) {
+exports.getCommentList = function (articleId, pageNo, pageSize) {
+  console.log(articleId)
   if (articleId) {
     return comments.findAndCountAll({
       where: {
         $or: [
-          {commentsArticleId: articleId},
-          {replyUser: replyUser}
+          {commentsArticleId: articleId}
         ]
       },
       order: [
@@ -72,9 +72,6 @@ exports.getCommentList = function (articleId, replyUser, pageNo, pageSize) {
       order: [
         ['id', 'DESC'],
       ],
-      where: {
-        replyUser: replyUser
-      },
       offset: pageNo,
       limit: pageSize
     })
