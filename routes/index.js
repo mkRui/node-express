@@ -58,6 +58,8 @@ router.post('/article/addArticle', controller.article.addArticle)
 
 router.post('/article/uploadImg', uploadImg.single('fileName'), controller.article.articleImg)
 
+router.get('/article/articleArchive', controller.article.articleArchive)
+
 router.get('/article/articlePage', controller.article.articlePage)
 
 router.get('/article/articleDetail', controller.article.articleDetail)

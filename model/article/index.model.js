@@ -183,7 +183,11 @@ exports.searchArticle = function (articleTitle = '') {
 }
 
 exports.selectAllArticle = function () {
-  return article.findAll()
+  return article.findAndCountAll({
+    order: [
+      ['id', 'DESC'],
+    ]
+  })
 }
 
 // 文章点赞

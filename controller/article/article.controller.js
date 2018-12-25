@@ -257,8 +257,40 @@ class article {
   }
 
   /**
-   * 
+   * 归档
    */
+
+  static articleArchive (req, res, next) {
+    articleControl.selectAllArticle()
+    .then((data) => {
+      let archiveList = data.rows
+      let articleList = []
+      let arr = Array.from(new Set(archiveList.map(item => item.createTime.split('-')[0])))
+      let date = archiveList.map(item => item.createTime)
+      for (const item of arr) {
+        let month = []
+        for (const elem of date) {
+          if (item === elem.split('-')[0]) {
+            month = Array.from(new Set(date.map(param => param.split('-')[1]))).map(i => ({month: i, child: []}))
+          }
+        }
+        articleList.push({
+          year: item,
+          child: month
+        })
+      }
+      articleList.forEach(item => {
+        item.child.forEach(elem => {
+          let article = archiveList.filter(param => param.createTime.split('-').splice(0,2).join('-') === `${item.year}-${elem.month}`)
+          elem.child = article
+        })
+      })
+      res.send(dataModel(1, '', articleList))
+    }).catch((data) => {
+      res.send(dataModel(-1, '服务器忙', {}))
+    })
+  }
+
 
 
 

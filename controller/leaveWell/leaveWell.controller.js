@@ -53,10 +53,10 @@ class leaveController {
    */
   
   static addLeave (req, res, next) {
-    let { title, user, content } = req.body
+    let { title, name, content } = req.body
     let createTime = new Date().getTime()
     // 创建新留言
-    leaveModel.addLeave(title, user, createTime, content).then((data) => {
+    leaveModel.addLeave(title, name, createTime, content).then((data) => {
       res.send(dataModel(1, '留言成功', {}))
     }).catch((data) => {
       console.log(data)

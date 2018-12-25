@@ -56,6 +56,9 @@ exports.deleteLeave = (id) => {
 // limit 分页数量
 exports.leaveWellPage = (pageSize, pageNo) => {
   return leaveWell.findAndCountAll({
+    order: [
+      ['id', 'DESC'],
+    ],
     offset: pageNo,
     limit: pageSize
   })
