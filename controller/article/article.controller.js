@@ -9,6 +9,8 @@ const tag = require('./../../model/tag/index.model')
 
 const dataModel = require('./../../config/index').DATA
 
+const email =require('./../../config/index').EMAIL
+
 const fs = require('fs')
 
 const path = require('path')
@@ -81,7 +83,6 @@ class article {
           res.send(dataModel(-1, '文章标题重复 请更换标题', {}))
         }
       }).catch((data) => {
-        console.log(data)
         res.send(dataModel(-1, '服务器忙', {}))
       })
     } else {
@@ -180,6 +181,7 @@ class article {
    */
 
   static articleDetail (req, res, next) {
+    console.log(email)
     let {id} = req.query
     let articleInfo
     articleControl.selectArticleId(id).then((data) => {
@@ -217,7 +219,6 @@ class article {
       }
       res.send(dataModel(1, '', articleInfo))
     }).catch((data) => {
-      console.log(data)
       res.send(dataModel(-1, '服务器忙', {}))
     })
   }

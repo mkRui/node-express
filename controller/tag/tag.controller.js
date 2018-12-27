@@ -35,7 +35,6 @@ class tag {
         list: data.rows
       }))
     }).catch((data) => {
-      console.log(data)
       res.send(dataModel(-1, '服务器忙', {}))
     })
   }
@@ -68,7 +67,6 @@ class tag {
           res.send(dataModel(1, '已有该分类', {}))
         }
       }).catch((data) => {
-        console.log(data)
         res.send(dataModel(-1, '服务器忙', {}))
       })
     } else {
@@ -89,7 +87,6 @@ class tag {
   static updateTagInfo (req, res, next) {
     let {id, instructions} = req.body
     tagModel.updateTag(id, instructions).then((data) => {
-      console.log(data)
       res.send(dataModel(1, '修改成功', {}))
     }).catch((data) => {
       res.send(dataModel(-1, '服务器忙', {}))

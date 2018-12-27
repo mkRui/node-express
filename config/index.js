@@ -1,8 +1,8 @@
 const Sequelize = require('sequelize');
 const argv = require('yargs').alias('u', 'emailUser').alias('p', 'emailPass').argv;
 
-exports.SEQUELIZE = new Sequelize('blog_control', 'root', 'varscr9931', {
-  host: 'localhost',
+exports.SEQUELIZE = new Sequelize('blog_control', 'cloud', 'cloud123456', {
+  host: '39.106.221.173',
   dialect: 'mysql',
   pool: {
     max: 5,
@@ -34,5 +34,5 @@ exports.DATA = (code, messgae, result) => {
 
 exports.EMAIL = {
   emailUser: argv.emailUser || '1102163949@qq.com',
-  emailPass: argv.emailPass || 'hmzwekvdqpcqgabi'
+  emailPass: argv.emailPass || 'vcikruvzqyetgbhd'
 }

@@ -128,7 +128,6 @@ class user {
    */
 
   static logOut (req, res, next) {
-    console.log(req.session.init)
     delete req.session.init
     res.send(dataModel(1, '退出成功', {}))
   }

@@ -95,7 +95,6 @@ class global {
   }
 
   static renderFile (req, res, next) {
-    console.log(req.params)
     fs.readFile(`../static/${req.params.img}`, (err, data) => {
       if (err) {
         res.send(dataModel(-1, '您查找的文件不存在', {}))

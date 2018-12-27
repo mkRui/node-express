@@ -12,7 +12,7 @@ const articleModel = require('./../../model/article/index.model')
 
 const userModel = require('./../../model/user/index.model')
 
-const email = require('./../../tool/email').sendEmail
+const sendEmail = require('./../../tool/email').sendEmail
 
 const dataModel = require('./../../config/index').DATA
 
@@ -35,7 +35,6 @@ class comments {
       pageNo,
       pageSize
     } = req.query
-    console.log(req.query)
     commentsModel.getCommentList(articleId, Number(pageNo - 1) * pageSize, Number(pageSize))
     .then((data) => {
       res.send(dataModel(1, '', {
@@ -106,7 +105,21 @@ class comments {
             articleModel.addCommentsNum(articleId)
           ])
         }).then((data) => {
-          // 查找并发邮件
+          sendEmail({
+            to: data[0].email,
+            subject: `${user}回复了您的评论`,
+            text: `${user}回复了您的评论 请注意查收`,
+            html: `<div>
+                    <p style='font-size: 24px;'>${user}回复了您的评论</p>
+                    <img style='width: 100%;' src="cid:00000001"/>
+                    <p style='width: 100%; text-align: right;'><strong>[<a href='http://www.scrscript.com/static/BLOG.png'>点击查看详情</a>]</strong></p>
+                  </div>`,
+            attachments: [{
+              filename: '怎样.png',
+              path: 'http://www.scrscript.com/static/BLOG.png',
+              cid: '00000001'
+            }]
+          })
           res.send(dataModel(1, '评论成功', {}))
         }).catch(() => {
           res.send(dataModel(-1, '服务器忙', {}))
@@ -137,6 +150,23 @@ class comments {
             return reviewersModel.getReviewers('', replyid)
           }
         }).then((data) => {
+          if (data) {
+            sendEmail({
+              to: data[0].email,
+              subject: !parentId ? `${user}评论了您的文章` : `${user}回复了您的评论`,
+              text: !parentId ? `${user}评论了您的文章 请注意查收` : `${user}回复了您的评论 请注意查收`,
+              html: `<div>
+                      <p style='font-size: 24px;'>${!parentId ? user + '评论了您的文章' : user + '回复了您的评论'}</p>
+                      <img style='width: 100%;' src="cid:00000001"/>
+                      <p style='width: 100%; text-align: right;'><strong>[<a href='http://www.scrscript.com/static/BLOG.png'>点击查看详情</a>]</strong></p>
+                    </div>`,
+              attachments: [{
+                filename: '怎样.png',
+                path: 'http://www.scrscript.com/static/BLOG.png',
+                cid: '00000001'
+              }]
+            })
+          }
           res.send(dataModel(1, '评论成功', {}))
         }).catch((e) => {
           res.send(dataModel(-1, '服务器忙', {}))
@@ -186,7 +216,6 @@ class comments {
     //     }
     //     res.send(dataModel(1, '评论成功', {}))
     //   }).catch((data) => {
-    //     console.log(data)
     //     res.send(dataModel(-1, '服务器忙', {}))
     //   })
     // } else {
@@ -241,7 +270,6 @@ class comments {
     commentsModel.commentPraise(id).then((data) => {
       res.send(dataModel(1, '点赞成功', {}))
     }).catch((data) => {
-      console.log(data)
       res.send(dataModel(-1, '服务器忙', {}))
     })
   }

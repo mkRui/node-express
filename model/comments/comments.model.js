@@ -53,7 +53,6 @@ const comments = sequelize.define('comments', {
 
 // 获取当前登录用户的评论列表
 exports.getCommentList = function (articleId, pageNo, pageSize) {
-  console.log(articleId)
   if (articleId) {
     return comments.findAndCountAll({
       where: {

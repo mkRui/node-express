@@ -146,7 +146,6 @@ exports.selectArticlePage = function (state, submit, tag, classify, keyWord, pag
 }
 
 exports.hotArticleList = function (pageNo, pageSize) {
-  console.log(pageNo)
   return article.findAndCountAll({
     order: [
       ['read_article_number', 'DESC']

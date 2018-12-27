@@ -6,7 +6,6 @@ const logger = require('morgan');
 const bodyParser = require('body-parser')
 const session = require('express-session')
 const indexRouter = require('./routes/index');
-const dataModel = require('./config/index').DATA
 
 
 const app = express();
@@ -21,7 +20,7 @@ app.use(session({
   resave: false,
   saveUninitialized: true
 }))
-app.use(express.static(path.join(__dirname, 'public')));
+app.use('' ,express.static(path.join(__dirname, 'dist')));
 
 app.all('*', (req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*')
