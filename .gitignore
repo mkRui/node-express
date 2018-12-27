@@ -1,7 +1,6 @@
 .DS_Store
 node_modules/
 dist/
-config/
 # Editor directories and files
 .idea
 .vscode
@@ -9,3 +8,4 @@ config/
 *.ntvs*
 *.njsproj
 *.sln
+config/index.js
