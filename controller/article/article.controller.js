@@ -292,9 +292,37 @@ class article {
     })
   }
 
+  /**
+   * 增加文章阅读量
+   * 
+   * @static readArticle
+   * 
+   * @param {id} 文章id
+   */
+  static readArticle (req, res, next) {
+    let { id } = req.body
+    articleControl.addCommentsNum(id).then(() => {
+      res.send(dataModel(1, '成功', ''))
+    }).catch((e) => {
+      res.send(dataModel(-1, '服务器忙', ''))
+    })
+  }
 
-
-
+  /**
+   * 增加文章阅读量
+   * 
+   * @static praiseArticle
+   * 
+   * @param {id} 文章id
+   */
+  static praiseArticle (req, res, next) {
+    let { id } = req.body
+    articleControl.articlePraise(id).then(() => {
+      res.send(dataModel(1, '成功', ''))
+    }).catch((e) => {
+      res.send(dataModel(-1, '服务器忙', ''))
+    })
+  }
 }
 
 module.exports = article

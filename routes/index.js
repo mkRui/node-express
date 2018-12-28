@@ -70,6 +70,10 @@ router.get('/article/getHotArticle', controller.article.getHotArticle)
 
 router.post('/article/deleteArticle', controller.article.deleteArticle)
 
+router.post('/article/readArticle', controller.article.readArticle)
+
+router.post('/article/praiseArticle', controller.article.praiseArticle)
+
 // 面板
 router.get('/panel/statistical', controller.panel.statistical)
 

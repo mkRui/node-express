@@ -199,6 +199,11 @@ exports.addCommentsNum = function (id) {
   return sequelize.query(`UPDATE article_control SET article_comments=article_comments+1 WHERE id=${id}`)
 }
 
+// 文章阅读量增加
+exports.addCommentsNum = function (id) {
+  return sequelize.query(`UPDATE article_control SET read_article_number=read_article_number+1 WHERE id=${id}`)
+}
+
 // 文章阅读量 返回数据
 exports.articleRead = function () {
   return sequelize.query('SELECT read_article_number as readArticleNumber, article_title as articleTitle  FROM article_control ORDER BY read_article_number DESC LIMIT 5')

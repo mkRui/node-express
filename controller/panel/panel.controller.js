@@ -19,7 +19,7 @@ class panel {
   static statistical (req, res, next) {
     articleControl.selectAllArticle().then((data) => {
       let statisticalList = [{state: 1, totalCount: 0}, {state: 2, totalCount: 0}, {state: 3, totalCount: 0}, {state: 4, totalCount: 0}]
-      data.forEach((elem, index) => {
+      data.rows.forEach((elem, index) => {
         if (Number(elem.draft) === 1) {
           statisticalList[1].totalCount += 1
         } else if (Number(elem.draft) === 0) {
