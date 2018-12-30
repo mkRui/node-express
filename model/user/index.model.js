@@ -149,3 +149,12 @@ exports.updateUserInfo = (id, nickName, email, UserRoleId) => {
     }
   })
 }
+
+
+exports.delUser = (id) => {
+  return userControl.destroy({
+    where: {
+      id: id
+    }
+  })
+}

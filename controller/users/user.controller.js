@@ -239,6 +239,22 @@ class user {
       res.send(dataModel(-1, '服务器忙', {}))
     })
   }
+
+
+  /**
+   * @static delUser
+   * 
+   * @param { id } 人员id
+   * 
+   */
+  static delUser (req, res, next) {
+    let id = rres.body
+    userModel.delUser(id).then(() => {
+      res.send(dataModel(1, '删除成功', {}))
+    }).catch(() => {
+      res.send(dataModel(-1, '服务器忙', {}))
+    })
+  }
 }
 
 module.exports = user
