@@ -3,11 +3,13 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "supervisor bin/www"
+    "dev": "cross-env NODE_ENV=development supervisor bin/www",
+    "start": "cross-env NODE_ENV=production pm2 start bin/www"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
     "cookie-parser": "~1.4.3",
+    "cross-env": "^5.2.0",
     "debug": "~2.6.9",
     "ejs": "~2.5.7",
     "express": "~4.16.0",
