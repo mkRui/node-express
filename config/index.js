@@ -1,8 +1,9 @@
 const Sequelize = require('sequelize');
 const argv = require('yargs').alias('u', 'emailUser').alias('p', 'emailPass').argv;
 
-exports.SEQUELIZE = new Sequelize('blog_control', 'cloud', 'cloud123456', {
-  host: '39.106.221.173',
+// 数据库 链接
+exports.SEQUELIZE = new Sequelize('blog_Control', 'root', '123456', {
+  host: 'localhost',
   dialect: 'mysql',
   pool: {
     max: 5,
@@ -32,9 +33,11 @@ exports.DATA = (code, messgae, result) => {
   }
 }
 
-// email 授权
-
+// 发送邮件配置
 exports.EMAIL = {
-  emailUser: argv.emailUser,
-  emailPass: argv.emailPass
+  emailUser: argv.emailUser || '你的邮箱',
+  emailPass: argv.emailPass || '你的邮箱授权'
 }
+
+// 环境变量 配置
+exports.storage = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://admin.scrscript.com'
