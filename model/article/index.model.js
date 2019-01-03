@@ -200,7 +200,7 @@ exports.addCommentsNum = function (id) {
 }
 
 // 文章阅读量增加
-exports.addCommentsNum = function (id) {
+exports.addReadNum = function (id) {
   return sequelize.query(`UPDATE article_control SET read_article_number=read_article_number+1 WHERE id=${id}`)
 }
 

@@ -33,9 +33,9 @@ router.get('/user/getUserPage', controller.user.getUserPage)
 
 router.get('/user/delUser', controller.user.delUser)
 
-router.post('/user/logOut', controller.user.logOut)
+router.get('/user/logOut', controller.user.logOut)
 
-router.post('/user/updateUserface', uploadImg.single('fileName'), controller.user.updateUserface)
+router.post('/user/updateUserface', controller.user.updateUserface)
 
 // 留言墙
 router.post('/leaveWell/addLeave', controller.leaveWell.addLeave)

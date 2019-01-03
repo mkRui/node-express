@@ -10,6 +10,8 @@ const userModel = require('./../../model/user/index.model')
 
 const dataModel = require('./../../config/index').DATA
 
+const storage = require('./../../config/index').storage
+
 const md5 = require('md5-node')
 
 const fs = require('fs')
@@ -140,18 +142,14 @@ class user {
    */
 
   static updateUserface (req, res, next) {
-    const files = req.file.path + path.parse(req.file.originalname).ext
-    const filePath = `http://www.scrscript.com/static/${req.file.filename + path.parse(req.file.originalname).ext}`
-    fs.rename(req.file.path,files,(err, data) => {
-      if (err) {
-        res.send(dataModel(-1, '服务器忙', {}))
-      }
-    })
+    let { filePath } = req.body
     if (req.session.init) {
-      userModel.updateUserface(req.session.init.id, filePath).then((data) => {
-        res.send(dataModel(1, '修改成功', filePath))
+      userModel.updateUserface(req.session.init.id, filePath)
+      .then((data) => {
         req.session.init.userFace = filePath
-        res.send(dataModel(1, '修改失败', {}))
+        res.send(dataModel(1, '修改成功', ''))
+      }).catch((e) => {
+        res.send(dataModel(-1, '服务器忙', {}))
       })
     } else {
       res.send(dataModel(-2, '请重新登录', {}))

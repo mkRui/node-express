@@ -14,6 +14,9 @@ const transPorter = nodeMailer.createTransport({
 
 exports.sendEmail = (options) => {
   options.from = `'hey firends' <1102163949@qq.com>`
+  console.log(
+    options
+  )
   transPorter.sendMail(options, (error, info) => {
     if (error) {
       return console.warn(error)

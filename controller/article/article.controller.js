@@ -9,6 +9,8 @@ const tag = require('./../../model/tag/index.model')
 
 const dataModel = require('./../../config/index').DATA
 
+const storage = require('./../../config/index').storage
+
 const email =require('./../../config/index').EMAIL
 
 const fs = require('fs')
@@ -102,9 +104,10 @@ class article {
       if (err) {
         res.send(dataModel(-1, '服务器忙', {}))
       } else {
+        
         res.send(dataModel(1, '上传成功', {
           fileName: req.file.filename + path.parse(req.file.originalname).ext,
-          filePath: `http://localhost:3000/blogApp/static/${req.file.filename + path.parse(req.file.originalname).ext}`
+          filePath: `${storage}/blogApp/static/${req.file.filename + path.parse(req.file.originalname).ext}`
         }))
       }
     })
@@ -301,7 +304,7 @@ class article {
    */
   static readArticle (req, res, next) {
     let { id } = req.body
-    articleControl.addCommentsNum(id).then(() => {
+    articleControl.addReadNum(id).then(() => {
       res.send(dataModel(1, '成功', ''))
     }).catch((e) => {
       res.send(dataModel(-1, '服务器忙', ''))
@@ -309,7 +312,7 @@ class article {
   }
 
   /**
-   * 增加文章阅读量
+   * 增加文章点赞
    * 
    * @static praiseArticle
    * 

@@ -17,9 +17,14 @@
 # 启动方式
 ``` bash
 # start
-npm run start
+npm run dev
+# 开发环境
 # script 使用了 supervisor 保持应用热更新
+
+npm run start
+# 生产环境
 ```
+使用了 cross-env 插件 兼容平台式 环境配置 
 
 # 基本功能
 为前后台做数据接口服务
