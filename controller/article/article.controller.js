@@ -184,7 +184,6 @@ class article {
    */
 
   static articleDetail (req, res, next) {
-    console.log(email)
     let {id} = req.query
     let articleInfo
     articleControl.selectArticleId(id).then((data) => {

@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 const argv = require('yargs').alias('u', 'emailUser').alias('p', 'emailPass').argv;
 
 // 数据库 链接
-exports.SEQUELIZE = new Sequelize('blog_Control', 'root', '123456', {
+exports.SEQUELIZE = new Sequelize('blog_control', 'root', 'varscr9931', {
   host: 'localhost',
   dialect: 'mysql',
   pool: {
@@ -35,8 +35,8 @@ exports.DATA = (code, messgae, result) => {
 
 // 发送邮件配置
 exports.EMAIL = {
-  emailUser: argv.emailUser || '你的邮箱',
-  emailPass: argv.emailPass || '你的邮箱授权'
+  emailUser: argv.emailUser || '1102163949@qq.com',
+  emailPass: argv.emailPass || 'vcikruvzqyetgbhd'
 }
 
 // 环境变量 配置

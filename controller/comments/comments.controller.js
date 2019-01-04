@@ -151,21 +151,6 @@ class comments {
           }
         }).then((data) => {
           if (data) {
-            console.log({
-              to: data[0].email,
-              subject: !parentId ? `${user}评论了您的文章` : `${user}回复了您的评论`,
-              text: !parentId ? `${user}评论了您的文章 请注意查收` : `${user}回复了您的评论 请注意查收`,
-              html: `<div>
-                      <p style='font-size: 24px;'>${!parentId ? user + '评论了您的文章' : user + '回复了您的评论'}</p>
-                      <img style='width: 100%;' src="cid:00000001"/>
-                      <p style='width: 100%; text-align: right;'><strong>[<a href='https://scrscript.com/article/${articleId}'>点击查看详情</a>]</strong></p>
-                    </div>`,
-              attachments: [{
-                filename: '怎样.png',
-                path: 'https://admin.scrscript.com/blogApp/static/BLOG.png',
-                cid: '00000001'
-              }]
-            })
             sendEmail({
               to: data[0].email,
               subject: !parentId ? `${user}评论了您的文章` : `${user}回复了您的评论`,

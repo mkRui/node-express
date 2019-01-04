@@ -58,7 +58,6 @@ class leaveController {
     leaveModel.addLeave(title, name, createTime, content).then((data) => {
       res.send(dataModel(1, '留言成功', {}))
     }).catch((data) => {
-      console.log(data)
       res.send(dataModel(-1, '服务器忙', {}))
     })
   }

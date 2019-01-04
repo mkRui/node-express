@@ -5,7 +5,7 @@ const multer = require('multer')
 const uploadImg = multer({dest: './../static'})
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', (req, res, next) => {
   res.send('this is Blog welcome in')
 });
 
@@ -31,7 +31,7 @@ router.get('/user/allUserList', controller.user.allUserList)
 
 router.get('/user/getUserPage', controller.user.getUserPage)
 
-router.get('/user/delUser', controller.user.delUser)
+router.post('/user/delUser', controller.user.delUser)
 
 router.get('/user/logOut', controller.user.logOut)
 

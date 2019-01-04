@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser('qzuser'));
 app.use(session({
   secret: 'qzuser',
-  cookie: {maxAge: 1000 * 60 * 30},
+  cookie: {maxAge: 1000 * 60 * 60},
   resave: false,
   saveUninitialized: true
 }))
@@ -27,6 +27,37 @@ app.all('*', (req, res, next) => {
   res.header('Access-Control-Allow-Headers', 'Content-Type,Content-Length, Authorization, Accept,X-Requested-With')
   res.header('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,OPTIONS')
   next()
+})
+
+app.use('/', (req, res, next) => {
+  let filterList = [
+    '/blogApp/user/delUser',
+    '/blogApp/user/updateUserface',
+    '/blogApp/user/updateInfo',
+    '/blogApp/user/updateState',
+    '/blogApp/global/editGlobal',
+    '/blogApp/comments/deleteComment',
+    '/blogApp/article/deleteArticle',
+    '/blogApp/tagControl/deleteTag',
+    '/blogApp/tagControl/updateTagInfo',
+    '/blogApp/leaveWell/deleteLeave',
+    '/blogApp/article/addArticle',
+    '/blogApp/article/uploadImg',
+  ]
+  if (filterList.includes(req.url.split('?')[0])) {
+    console.log(req.url.split('?')[0])
+    if (req.session.init) {
+      next()
+    } else {
+      res.send({
+        code: -2,
+        messgae: '请登录',
+        result: ''
+      })
+    }
+  } else {
+    next()
+  }
 })
 
 app.use('/blogApp', indexRouter);
