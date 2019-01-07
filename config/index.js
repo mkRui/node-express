@@ -35,7 +35,7 @@ exports.DATA = (code, messgae, result) => {
 
 // 发送邮件配置
 exports.EMAIL = {
-  emailUser: argv.emailUser || 'emial',
+  emailUser: argv.emailUser || 'email',
   emailPass: argv.emailPass || 'authorization'
 }
 
