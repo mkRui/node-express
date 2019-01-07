@@ -35,8 +35,8 @@ exports.DATA = (code, messgae, result) => {
 
 // 发送邮件配置
 exports.EMAIL = {
-  emailUser: argv.emailUser || '1102163949@qq.com',
-  emailPass: argv.emailPass || 'vcikruvzqyetgbhd'
+  emailUser: argv.emailUser || 'email',
+  emailPass: argv.emailPass || 'authorization'
 }
 
 // 环境变量 配置

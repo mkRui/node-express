@@ -246,7 +246,7 @@ class user {
    * 
    */
   static delUser (req, res, next) {
-    let id = rres.body
+    let id = res.body
     userModel.delUser(id).then(() => {
       res.send(dataModel(1, '删除成功', {}))
     }).catch(() => {
