@@ -1,7 +1,16 @@
 # express-node
-> node express 后端应用
-> 
-为 blog 前台 后台 做接口服务 
+> node express 后端应用 为 blog 前台 后台 做接口服务
+
+# 执行任务
+这个express已经开发完成好几个月了经过一段时间还是有一些问题，于是乎打算把此项目重构一遍，然后此分支会根据重构进度来修改问题，而且也想把ts用到我的项目中 借此学习巩固自己的知识。
+
+# 执行内容（任务）
+> 若要查看新分支进程 请查看新的分支 node-nest `https://github.com/CoderRui/node-express/tree/node-nest`
+1. 采用nest来重构本项目
+2. 修改master分支上的问题，并同时开发新功能
+3. 修改部分数据库字段
+4. 重新设计评论接口以及功能
+5. 主分支 代码以及结构 进行优化
 
 
 # 基本插件 
