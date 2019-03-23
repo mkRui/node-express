@@ -151,6 +151,7 @@ class article {
         list: data.rows
       }))
     }).catch((data) => {
+      console.log(data)
       res.send(dataModel(-1, '服务器忙', {}))
     })
   }
