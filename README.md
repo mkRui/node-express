@@ -1,41 +1,21 @@
-# express-node
-> node express 后端应用
-> 
-为 blog 前台 后台 做接口服务 
+# node-nest
 
+> `NestJs` 是基于 `express` 和 `scoket.io` 构建而主分支 [master](https://github.com/CoderRui/node-express/tree/node-nest) 则是主要使用 express 进行构建，`NestJs`采用 `js` 构建 `ts` 编码，所以采用 `NestJs` 已经成为了我的不二之选。  
 
-# 基本插件 
-1.express 脚手架
+数据库还是采用`mysql` 依旧采用 `orm/TypeORM` 并且同样采用`MVC`分层，初始的就先计划这么多 
 
-2.orm Sequelize
+```bash
+1. 克隆项目。。。  
 
-3.mySql 数据库
+# 下载依赖
+2.npm i or cnpm i  
 
-4.nodemailer 发送邮件
+# 启动项目
+3. npm install
 
-
-# 启动方式
-``` bash
-# start
-npm run dev
-# 开发环境
-# script 使用了 supervisor 保持应用热更新
-
-npm run start
-# 生产环境
+# 访问地址 http://localhost:3000
 ```
-使用了 cross-env 插件 兼容平台式 环境配置 
-
-# 基本功能
-为前后台做数据接口服务
-
-1.评论 使用 nodemailer 给评论人 或者 发布人 发送邮件
-
-2.本后端服务 使用了 mvc 式的分层方式
-
-# 计划
-1.优化 评论功能 
-
-2.数据字典管理 待优化 
-
-3.代码格式 需要优化
+# 更新日志
+### 2019-03
+- 2018-03-24
+    - 初步构建项目
