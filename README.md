@@ -23,6 +23,8 @@
 ```
 # 更新日志
 ### 2019-03
+- 2019-04-07
+    - 增加 logger 中间件 添加ip、浏览器版本获取函数 （中间件🍬）
 - 2019-03-26
     - 文件结构分层 （module controller provider 以及 reflect metaData 学习 😡）
 - 2019-03-25
