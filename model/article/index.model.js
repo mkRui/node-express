@@ -81,7 +81,6 @@ exports.addArticle = function (
       articleTitle: articleTitle,
       articleMin: articleMin,
       articleContent: articleContent,
-      createTime: createTime,
       articleTag: articleTag,
       articleClassification: articleClassification,
       state: state,

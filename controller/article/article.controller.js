@@ -77,7 +77,11 @@ class article {
       }).then((data) => {
         if (data) {
           if (Number(submit) === 1) {
-            res.send(dataModel(1, '发布成功', {}))
+            if (id) {
+              res.send(dataModel(1, '编辑成功', {}))
+            } else {
+              res.send(dataModel(1, '发布成功', {}))
+            }
           } else {
             res.send(dataModel(-1, '已存入草稿箱', {}))
           }
