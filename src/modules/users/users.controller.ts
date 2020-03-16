@@ -2,12 +2,12 @@ import { Controller, Get } from '@nestjs/common';
 import { UsersService } from './users.service';
 
 
-@Controller()
+@Controller('user')
 export class UserController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get('user')
-  getHello(): string {
-    return this.usersService.getHello();
+  getHello(): Promise<Object> {
+    return this.usersService.getHello()
   }
 }

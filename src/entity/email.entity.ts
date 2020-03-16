@@ -1,20 +1,20 @@
-// 权限列表
+//  邮箱验证码
 
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
-@Entity('user_jurisdiction')
-export class UserJurisdiction {
+@Entity('email_code')
+export class EmailCode {
 
     @PrimaryGeneratedColumn()
     id: number;
 
     @Column()
-    user_type: string;
+    email: string;
 
     @Column()
-    user_role: number;
+    code: number;
 
     @Column()
-    role_content: number;
+    create_time: Date;
 
 }

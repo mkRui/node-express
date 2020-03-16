@@ -15,9 +15,7 @@ export class UsersService {
 
 
   async getHello() {
-
-    const qb = await getRepository(UserJurisdiction).createQueryBuilder('user')
-    console .log(qb)
-    return 'Morty';
+    const qb = await getRepository(UserJurisdiction).find();
+    return qb;
   }
 }

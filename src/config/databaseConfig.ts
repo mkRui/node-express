@@ -3,8 +3,6 @@ import { join } from 'path';
 
 const EntityRecursivePath = join(__dirname + '/../**/*.entity{.ts,.js}',);
 
-console.log(EntityRecursivePath)
-
 let proces = require('dotenv').config();
 
 export const MysqlConfig: any = {

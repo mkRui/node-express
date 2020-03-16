@@ -20,12 +20,15 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@mobizerg/nest-nodemailer": "^1.1.0",
     "@nestjs/common": "^6.10.14",
     "@nestjs/core": "^6.10.14",
     "@nestjs/platform-express": "^6.10.14",
     "@nestjs/typeorm": "^6.3.4",
+    "@types/nodemailer": "^6.4.0",
     "dotenv": "^8.2.0",
     "mysql": "^2.18.1",
+    "nodemailer": "^6.4.5",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.0",
     "rxjs": "^6.5.4"
