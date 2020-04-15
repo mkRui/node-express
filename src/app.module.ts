@@ -8,7 +8,10 @@ import { UsersModele } from './modules/users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MysqlConfig } from './config/databaseConfig';
 @Module({
-  imports: [TypeOrmModule.forRoot(MysqlConfig), UsersModele],
+  imports: [
+    TypeOrmModule.forRoot(MysqlConfig),
+    UsersModele
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
